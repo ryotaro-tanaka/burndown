@@ -1,6 +1,6 @@
 {
-  "name": "vue-cli",
-  "version": "0.1.0",
+  "name": "burndown-chart-app",
+  "version": "0.2.0",
   "private": true,
   "scripts": {
     "serve": "// vue-cli-service serve",
@@ -14,6 +14,7 @@
   "main": "background.js",
   "dependencies": {
     "core-js": "^3.4.3",
+    "sqlite3": "^4.1.0",
     "vue": "^2.6.10"
   },
   "devDependencies": {
@@ -22,6 +23,7 @@
     "@vue/cli-service": "^4.1.0",
     "babel-eslint": "^10.0.3",
     "electron": "^6.0.0",
+    "electron-rebuild": "^1.8.8",
     "eslint": "^5.16.0",
     "eslint-plugin-vue": "^5.0.0",
     "vue-cli-plugin-electron-builder": "^1.4.2",
