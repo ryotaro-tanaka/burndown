@@ -1,4 +1,4 @@
-# vue-cli
+# burndown-chart-app
 
 ## Project setup
 ```
@@ -7,12 +7,13 @@ npm install
 
 ### Compiles and hot-reloads for development
 ```
-npm run electron:serve
+npm run dev #if necessary
+npm run serve
 ```
 
 ### Compiles and minifies for production
 ```
-npm run electron:build
+npm run build
 ```
 
 ### Lints and fixes files
