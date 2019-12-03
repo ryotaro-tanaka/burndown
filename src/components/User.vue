@@ -1,26 +1,59 @@
 <template>
     <div>
-        <p>User Table</p>
-        <button id='add-to-db' @click="addData()">データ登録</button>
+        <div>{{weekly}}</div>
+        <!-- <input type="button" value="aaaa" @click="loadWeekly()"> -->
     </div>
 </template>
 
 <script>
-// @ is an alias to /src
 import sqlite3 from 'sqlite3'
-// let db = new sqlite3.Database('../db/testfile.db')
-let db = new sqlite3.Database('testfile.db')
+const db = new sqlite3.Database('db/sch.db')
 
 export default {
-    name: 'User',
+    components: {
+    },
+    data: function() {
+        return {
+            weekly: []
+        }
+    },
+    mounted: function() {
+        this.loadWeekly();
+        db.close();
+    },
     methods: {
         addData () {
             db.serialize(function () {
-                let stmt = db.prepare("insert into users('name', 'email', 'age') values(?, ?, ?)");
-                stmt.run('John', 'test@test.local', 20);
-                // 上記では例のために固定値を渡しているが、
-                // 実際にはフォームから受け取った値などを渡す。
+                const stmt = db.prepare("insert into users(id, name) values(?, ?)")
+                stmt.run(100, 'John')
+            })
+        },
+        loadWeekly: function() {
+            let str = 'test';
+            db.serialize(function () {
+                str = 'serialize';
+
+                db.get("select * from Weekly", function(err, row) {
+                    if (err) {
+                        str = 'err';
+                    } else {
+                        str = str + row.name;
+                    }
+                }, function(err, count){
+                    if (err){
+                        str = 'err2';
+                    }else{
+                        if (count === 0){
+                            str = '0count';
+                        }else{
+                            str = '?count';
+                        }
+                    }
+                });
             });
+
+            this.weekly = '';
+            this.weekly = str;
         }
     }
 }
