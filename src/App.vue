@@ -1,18 +1,24 @@
 <template>
   <div id="app">
-    <!-- <img alt="Vue logo" src="./assets/logo.png"> -->
-    <!-- <HelloWorld msg="aab Welcome to Your Vue.js App"/> -->
-    <User/>
+    <Days :width="width"/>
+    <dbtest/>
   </div>
 </template>
 
 <script>
-import User from './components/User.vue'
+import Days from './components/Days.vue'
+import dbtest from './components/dbtest.vue'
 
 export default {
   name: 'app',
   components: {
-    User
+    Days,
+    dbtest
+  },
+  data: function() {
+    return {
+      width: 48
+    }
   }
 }
 </script>
