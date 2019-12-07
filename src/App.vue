@@ -1,23 +1,31 @@
 <template>
   <div id="app">
-    <Days :width="width"/>
-    <dbtest/>
+    <div>{{ count }}</div>
+    <input type="button" @click="addCount()" value="add count">
+    <!-- <dbtest/> -->
   </div>
 </template>
 
 <script>
-import Days from './components/Days.vue'
-import dbtest from './components/dbtest.vue'
+// import dbtest from './components/dbtest.vue'
 
 export default {
   name: 'app',
   components: {
-    Days,
-    dbtest
+    // dbtest
   },
   data: function() {
     return {
-      width: 48
+    }
+  },
+  computed: {
+    count() {
+      return this.$store.state.weekly.count;
+    }
+  },
+  methods: {
+    addCount() {
+      this.$store.dispatch('addCount',{num:3});
     }
   }
 }
