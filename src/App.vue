@@ -1,7 +1,17 @@
 <template>
   <div id="app">
-    <div>{{ count }}</div>
-    <input type="button" @click="addCount()" value="add count">
+    <p>Weekly</p>
+    <div v-for="week in weekly" :key="week.week_id">
+      {{ `${week.week_id} : ${week.name}` }}
+    </div>
+    <p>StartDay -> {{ startDay }}</p>
+    <p>Tasks</p>
+    <div v-for="task in tasks" :key="task.task_id">
+      {{`
+        ${task.task_id}(${task.name}) : 
+        ${task.expectations_cost} -> ${task.result_cost}
+      ` }}
+    </div>
     <!-- <dbtest/> -->
   </div>
 </template>
@@ -14,20 +24,24 @@ export default {
   components: {
     // dbtest
   },
-  data: function() {
-    return {
-    }
-  },
+  // data () { return{} },
   computed: {
-    count() {
-      return this.$store.state.weekly.count;
+    weekly() {
+      return this.$store.state.weekly.weekly;
+    },
+    startDay () {
+      return this.$store.getters.startDay;
+    },
+    tasks () {
+      return this.$store.state.tasks.tasks;
     }
   },
-  methods: {
-    addCount() {
-      this.$store.dispatch('addCount',{num:3});
-    }
-  }
+  created () {
+    this.$store.dispatch('setWeekly');
+    this.$store.dispatch('setStartDay');
+    this.$store.dispatch('setTasks');
+  },
+  // methods: {}
 }
 </script>
 
