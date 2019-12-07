@@ -1,12 +1,12 @@
 <template>
   <div id="app">
     <p>Weekly</p>
-    <div v-for="week in weekly" :key="week.week_id">
+    <div v-for="week in weekly" :key="'week' + week.week_id">
       {{ `${week.week_id} : ${week.name}` }}
     </div>
     <p>StartDay -> {{ startDay }}</p>
     <p>Tasks</p>
-    <div v-for="task in tasks" :key="task.task_id">
+    <div v-for="task in tasks" :key="'task' + task.task_id">
       {{`
         ${task.task_id}(${task.name}) : 
         ${task.expectations_cost} -> ${task.result_cost}
