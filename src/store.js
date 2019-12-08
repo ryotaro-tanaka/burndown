@@ -23,8 +23,8 @@ const weeklyModule = {
             commit('SET_COUNT', state.count + num);
         },
         setWeekly ({commit}) {
-            db.serialize(function() {
-                db.all("SELECT * FROM Weekly",[], function(err, rows) {
+            db.serialize(() => {
+                db.all("SELECT * FROM Weekly",[], (err, rows) => {
                     if (err) throw err;
                     commit('SET_WEEKLY', rows);
                 });
@@ -36,8 +36,8 @@ const weeklyModule = {
 const startDayModule = {
     state: {
         year: 1970,
-        month: 1,
-        day: 0
+        month: 0,
+        day: 1
     },
     getters: {
         startDay: state => {
@@ -82,12 +82,46 @@ const tasksModule = {
     },
     actions: {
         setTasks ({commit}) {
-            db.serialize(function() {
-                db.all("SELECT * FROM Tasks",[], function(err, rows) {
+            db.serialize(() => {
+                db.all("SELECT * FROM Tasks", [], (err, rows) => {
                     if (err) throw err;
                     commit('SET_TASKS', rows);
                 });
             });
+        },
+        insertTask ({commit}, {task_id, name, expectationsCost/*, resultCost, isCompleted*/}){
+            console.log(commit);
+            db.serialize(() => {
+                db.prepare('update Tasks set task_id = -(task_id + 1) where task_id >= ?')
+                    .run(task_id);
+                db.prepare('update Tasks set task_id = -(task_id) where task_id < 0')
+                    .run();
+                db.prepare(`insert into Tasks (task_id, name, expectations_cost, result_cost, is_completed) values(?, ?, ?, 0, 0)`)
+                    .run(task_id, name, expectationsCost)
+                    .finalize();
+            });
+            this.dispatch('setTasks');
+        },
+        deleteTask ({commit}, {task_id}) {
+            console.log(commit);
+            db.serialize(() => {
+                db.prepare('delete from Tasks where task_id = ?')
+                    .run(task_id);
+                db.prepare('update Tasks set task_id = task_id - 1 where task_id >= ?')
+                    .run(task_id)
+                    .finalize();
+            });
+            this.dispatch('setTasks');
+        },
+        updateResult ({commit}, {task_id, result_cost}) {
+            console.log(commit);
+            db.serialize(() => {
+                let isCompleted = (result_cost !== 0);
+                db.prepare('update Tasks set result_cost = ?, is_completed = ? where task_id = ?')
+                    .run(result_cost, isCompleted, task_id)
+                    .finalize();
+            });
+            this.dispatch('setTasks');
         }
     }
 }

@@ -12,17 +12,17 @@
         ${task.expectations_cost} -> ${task.result_cost}
       ` }}
     </div>
-    <!-- <dbtest/> -->
+    <input type="button" value="update" @click="updateResult()">
+    <input type="button" value="insert" @click="insertTask()">
+    <input type="button" value="delete" @click="deleteTask()">
   </div>
 </template>
 
 <script>
-// import dbtest from './components/dbtest.vue'
 
 export default {
   name: 'app',
   components: {
-    // dbtest
   },
   // data () { return{} },
   computed: {
@@ -41,7 +41,17 @@ export default {
     this.$store.dispatch('setStartDay');
     this.$store.dispatch('setTasks');
   },
-  // methods: {}
+  methods: {
+    updateResult() {
+      this.$store.dispatch('updateResult', {task_id:2, result_cost:20});
+    },
+    insertTask () {
+      this.$store.dispatch('insertTask', {task_id:4, name:'work-test', expectationsCost:20});
+    },
+    deleteTask () {
+      this.$store.dispatch('deleteTask', {task_id:4});
+    }
+  }
 }
 </script>
 
