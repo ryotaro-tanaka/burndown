@@ -1,5 +1,7 @@
 <template>
   <div id="app">
+    <Days/>
+
     <p>Weekly</p>
     <div v-for="week in weekly" :key="'week' + week.week_id">
       {{ `${week.week_id} : ${week.name}` }}
@@ -19,10 +21,12 @@
 </template>
 
 <script>
+import Days from './components/Days.vue'
 
 export default {
   name: 'app',
   components: {
+    Days
   },
   // data () { return{} },
   computed: {

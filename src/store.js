@@ -7,7 +7,11 @@ const db = new sqlite3.Database('db/sch.db');
 const weeklyModule = {
     state: {
         count: 100,
-        weekly: []
+        weekly: [{
+            week_id: -1,
+            name: '',
+            is_work: 0
+        }]
     },
     getters: {},
     mutations: {
@@ -71,7 +75,6 @@ const startDayModule = {
 
 const tasksModule = {
     state: {
-        tasksTableName: 'Tasks',
         tasks: []
     },
     getters: {},
