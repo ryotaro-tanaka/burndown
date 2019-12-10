@@ -1,26 +1,22 @@
 <template>
   <div id="app">
+    <Tasks/>
     <Days/>
 
-    <p>Tasks</p>
-    <div v-for="task in tasks" :key="'task' + task.task_id">
-      {{`
-        ${task.task_id}(${task.name}) : 
-        ${task.expectations_cost} -> ${task.result_cost}
-      ` }}
-    </div>
-    <input type="button" value="update" @click="updateResult()">
+    <!-- <input type="button" value="update" @click="updateResult()">
     <input type="button" value="insert" @click="insertTask()">
-    <input type="button" value="delete" @click="deleteTask()">
+    <input type="button" value="delete" @click="deleteTask()"> -->
   </div>
 </template>
 
 <script>
+import Tasks from './components/Tasks.vue'
 import Days from './components/Days.vue'
 
 export default {
   name: 'app',
   components: {
+    Tasks,
     Days
   },
   // data () { return{} },
