@@ -77,7 +77,11 @@ const tasksModule = {
     state: {
         tasks: []
     },
-    getters: {},
+    getters: {
+        // tasksCount: state => {
+        //     return state.tasks.length;
+        // }
+    },
     mutations: {
         SET_TASKS (state, status) {
             state.tasks = status;
@@ -135,5 +139,8 @@ export default new Vuex.Store({
         weekly: weeklyModule,
         startDay: startDayModule,
         tasks: tasksModule
+    },
+    state: {
+        daysCount : 14 // how to change?
     }
 });
