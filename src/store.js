@@ -120,6 +120,24 @@ const tasksModule = {
         //     });
         //     this.dispatch('setTasks');
         // },
+        updateTaskId({commit}, {oldTaskId, newTaskId}) {
+            console.log(commit + oldTaskId, newTaskId);
+        },
+        updateTaskValues({commit}, {taskId, name, expCost, resultCost, resultYear, resultMonth, resultDay}) {
+            if(isNaN(parseInt(taskId)) || isNaN(parseInt(expCost)) || isNaN(parseInt(resultCost)) 
+            || isNaN(parseInt(resultYear)) || isNaN(parseInt(resultMonth)) || isNaN(parseInt(resultDay))) {
+                return;
+            }
+
+            console.log(commit);
+            db.serialize(() => {
+                let isCompleted = (resultCost !== 0) && (resultYear >= 1970) && (resultMonth >= 0) && (resultDay > 0);
+                db.prepare('update Tasks set name=?, exp_cost=?, result_cost=?, is_completed=?, result_year=?, result_month=?, result_day=? where task_id=?;')
+                    .run(name, expCost, resultCost, isCompleted, resultYear, resultMonth, resultDay, taskId)
+                    .finalize();
+            });
+            this.dispatch('setTasks');
+        }
         // updateResult ({commit}, {task_id, result_cost}) {
         //     console.log(commit);
         //     db.serialize(() => {
