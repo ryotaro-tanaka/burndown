@@ -2,33 +2,33 @@
     <div id="tasks">
         <p>Tasks</p>
         <table>
-            <thead>
-                <tr>
-                    <td>ID</td>
-                    <td>name</td>
-                    <td>expectation</td>
-                    <td>result</td>
-                    <!-- <td>isCompleted</td> -->
-                    <td>year</td>
-                    <td>month</td>
-                    <td>day</td>
-                </tr>
-            </thead>
             <tbody>
                 <tr v-for="task in tasks" :key="task.task_id">
-                    <td>{{ task.task_id }}</td>
-                    <td>{{ task.name }}</td>
-                    <td>{{ task.exp_cost }}</td>
-                    <td>{{ task.result_cost }}</td>
-                    <td>{{ task.result_year }}</td>
-                    <td>{{ task.result_month }}</td>
-                    <td>{{ task.result_day }}</td>
+                    <th>
+                        {{ task.task_id }}
+                    </th>
+                    <th>
+                        <input type="text" :value="task.name"
+                        @blur="">
+                    </th>
+                    <td class="exp">
+                        {{ task.exp_cost }}
+                    </td>
+                    <td class="result" :class="{notComplete: !task.is_completed}">
+                        {{ task.result_cost }}
+                    </td>
+                    <td class="result" :class="{notComplete: !task.is_completed}">
+                        {{ task.result_year }}
+                    </td>
+                    <td class="result" :class="{notComplete: !task.is_completed}">
+                        {{ task.result_month }}
+                    </td>
+                    <td class="result" :class="{notComplete: !task.is_completed}">
+                        {{ task.result_day }}
+                    </td>
                 </tr>
             </tbody>
         </table>
-        <!-- <div v-for="task in tasks" :key="'task' + task.task_id">
-        {{ task }}
-        </div> -->
     </div>
 </template>
 
@@ -40,6 +40,8 @@ export default {
         }
     },
     methods: {
+        updateTasks () {
+        }
     }
 }
 </script>
@@ -54,5 +56,30 @@ export default {
     width: $tasks-width;
     height: 100vh;
     border-right: medium solid black;
+}
+
+table{
+  width: 100%;
+  border-spacing: 0;
+  tr {
+      th {
+        border-bottom: thin solid gainsboro;
+        padding: 10px 0;
+
+      }
+      .exp {
+        border-bottom: thin solid green;
+        text-align: center;
+        padding: 10px 0;
+      }
+      .result {
+        border-bottom: thin solid orange;
+        text-align: center;
+        padding: 10px 0;
+      }
+      .notComplete {
+          color: silver;
+      }
+  }
 }
 </style>
