@@ -64,4 +64,8 @@ export default {
   color: #2c3e50;
   // margin-top: 60px;
 }
+
+#tasks {
+  z-index: 1;
+}
 </style>

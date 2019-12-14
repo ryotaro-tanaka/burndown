@@ -1,9 +1,21 @@
 <template>
     <div id="tasks">
         <p>Tasks</p>
+        <div>
+            <input type="button" value="add"
+            @click="insertTask()">
+            <input type="button" value="delete"
+            @click="deleteTask()">
+            <input type="button" value="  ↑  "
+            @click="updateTaskId(1)">
+            <input type="button" value="  ↓  "
+            @click="updateTaskId(-1)">
+        </div>
         <table>
             <tbody>
-                <tr v-for="task in tasks" :key="task.task_id" :id="task.task_id">
+                <tr v-for="task in tasks" :key="task.task_id" :id="task.task_id"
+                :class="{target: targetTaskId === task.task_id}"
+                @click="changeTarget(task.task_id)">
                     <th>
                         {{ task.task_id }}
                     </th>
@@ -76,6 +88,14 @@ export default {
         updateTaskValues (id) {
             this.changeTarget(id);
             this.$store.dispatch('updateTaskValues', this.targetTask);
+        },
+        insertTask () {
+            this.$store.dispatch('insertTask');
+        },
+        deleteTask () {
+            this.$store.dispatch('deleteTask', {taskId: this.targetTaskId});
+        },
+        updateTaskId (amount) {
         }
     }
 }
@@ -91,6 +111,7 @@ export default {
     width: $tasks-width;
     height: 100vh;
     border-right: medium solid black;
+    background-color: white;
 }
 
 table{
@@ -121,6 +142,13 @@ table{
 
       input {
           width: 100%;
+          height: 100%;
+          background-color: transparent;
+          border: none;
+      }
+
+      &.target {
+          background-color: lightgray;
       }
   }
 }

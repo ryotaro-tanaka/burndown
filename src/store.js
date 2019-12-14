@@ -96,6 +96,14 @@ const tasksModule = {
                 });
             });
         },
+        insertTask () {
+            db.serialize(() => {
+                db.prepare('insert into Tasks (name, exp_cost, result_cost, is_completed, result_year, result_month, result_day) values ("new task", 0, 0, 0, 0, 0, 0)')
+                    .run()
+                    .finalize();
+            });
+            this.dispatch('setTasks');
+        },
         // insertTask ({commit}, {task_id, name, expectationsCost/*, resultCost, isCompleted*/}){
         //     console.log(commit);
         //     db.serialize(() => {
@@ -109,6 +117,16 @@ const tasksModule = {
         //     });
         //     this.dispatch('setTasks');
         // },
+        deleteTask (context, {taskId}) {
+            db.serialize(() => {
+                db.prepare('delete from Tasks where task_id = ?')
+                    .run(taskId);
+                db.prepare('update Tasks set task_id = task_id - 1 where task_id > ?')
+                    .run(taskId)
+                    .finalize();
+            });
+            this.dispatch({type:'setTasks', fake:context});
+        },
         // deleteTask ({commit}, {task_id}) {
         //     console.log(commit);
         //     db.serialize(() => {
@@ -120,34 +138,30 @@ const tasksModule = {
         //     });
         //     this.dispatch('setTasks');
         // },
-        updateTaskId({commit}, {oldTaskId, newTaskId}) {
-            console.log(commit + oldTaskId, newTaskId);
-        },
-        updateTaskValues({commit}, {taskId, name, expCost, resultCost, resultYear, resultMonth, resultDay}) {
+        // updateTaskId(context, {oldTaskId, newTaskId}) {
+        //     db.serialize(() => {
+        //         db.prepare('update Tasks set task_id = -(task_id + 1) where task_id >= ?')
+        //             .run(task_id);
+        //         db.prepare('update Tasks set task_id = -(task_id) where task_id < 0')
+        //             .run();
+        //     });
+        //     this.dispatch({type:'setTasks', fake:context});
+        // },
+        updateTaskValues(context, {taskId, name, expCost, resultCost, resultYear, resultMonth, resultDay}) {
             if(isNaN(parseInt(taskId)) || isNaN(parseInt(expCost)) || isNaN(parseInt(resultCost)) 
             || isNaN(parseInt(resultYear)) || isNaN(parseInt(resultMonth)) || isNaN(parseInt(resultDay))) {
                 return;
             }
 
-            console.log(commit);
             db.serialize(() => {
                 let isCompleted = (resultCost !== 0) && (resultYear >= 1970) && (resultMonth >= 0) && (resultDay > 0);
                 db.prepare('update Tasks set name=?, exp_cost=?, result_cost=?, is_completed=?, result_year=?, result_month=?, result_day=? where task_id=?;')
                     .run(name, expCost, resultCost, isCompleted, resultYear, resultMonth, resultDay, taskId)
                     .finalize();
             });
-            this.dispatch('setTasks');
+
+            this.dispatch({type:'setTasks', fake:context});
         }
-        // updateResult ({commit}, {task_id, result_cost}) {
-        //     console.log(commit);
-        //     db.serialize(() => {
-        //         let isCompleted = (result_cost !== 0);
-        //         db.prepare('update Tasks set result_cost = ?, is_completed = ? where task_id = ?')
-        //             .run(result_cost, isCompleted, task_id)
-        //             .finalize();
-        //     });
-        //     this.dispatch('setTasks');
-        // }
     }
 }
 
