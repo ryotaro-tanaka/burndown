@@ -104,19 +104,6 @@ const tasksModule = {
             });
             this.dispatch('setTasks');
         },
-        // insertTask ({commit}, {task_id, name, expectationsCost/*, resultCost, isCompleted*/}){
-        //     console.log(commit);
-        //     db.serialize(() => {
-        //         db.prepare('update Tasks set task_id = -(task_id + 1) where task_id >= ?')
-        //             .run(task_id);
-        //         db.prepare('update Tasks set task_id = -(task_id) where task_id < 0')
-        //             .run();
-        //         db.prepare(`insert into Tasks (task_id, name, expectations_cost, result_cost, is_completed) values(?, ?, ?, 0, 0)`)
-        //             .run(task_id, name, expectationsCost)
-        //             .finalize();
-        //     });
-        //     this.dispatch('setTasks');
-        // },
         deleteTask (context, {taskId}) {
             db.serialize(() => {
                 db.prepare('delete from Tasks where task_id = ?')
@@ -127,17 +114,6 @@ const tasksModule = {
             });
             this.dispatch({type:'setTasks', fake:context});
         },
-        // deleteTask ({commit}, {task_id}) {
-        //     console.log(commit);
-        //     db.serialize(() => {
-        //         db.prepare('delete from Tasks where task_id = ?')
-        //             .run(task_id);
-        //         db.prepare('update Tasks set task_id = task_id - 1 where task_id >= ?')
-        //             .run(task_id)
-        //             .finalize();
-        //     });
-        //     this.dispatch('setTasks');
-        // },
         updateTaskId(context, {oldTaskId, newTaskId}) {
             //TODO: incomplete promise
             return new Promise((resolve, reject) => {
