@@ -138,15 +138,26 @@ const tasksModule = {
         //     });
         //     this.dispatch('setTasks');
         // },
-        // updateTaskId(context, {oldTaskId, newTaskId}) {
-        //     db.serialize(() => {
-        //         db.prepare('update Tasks set task_id = -(task_id + 1) where task_id >= ?')
-        //             .run(task_id);
-        //         db.prepare('update Tasks set task_id = -(task_id) where task_id < 0')
-        //             .run();
-        //     });
-        //     this.dispatch({type:'setTasks', fake:context});
-        // },
+        updateTaskId(context, {oldTaskId, newTaskId}) {
+            //TODO: incomplete promise
+            return new Promise((resolve, reject) => {
+                if(oldTaskId <= 0 || newTaskId <= 0 || oldTaskId === newTaskId) reject();
+
+                db.serialize(() => {
+                    db.prepare('update Tasks set task_id = -? where task_id = ?')
+                        .run(newTaskId, oldTaskId);
+                    db.prepare('update Tasks set task_id = -? where task_id = ?')
+                        .run(oldTaskId, newTaskId);
+                    db.prepare('update Tasks set task_id = -(task_id) where task_id < 0')
+                        .run()
+                        .finalize();
+                });
+                
+                this.dispatch({type:'setTasks', fake:context});
+
+                resolve(newTaskId);
+            });
+        },
         updateTaskValues(context, {taskId, name, expCost, resultCost, resultYear, resultMonth, resultDay}) {
             if(isNaN(parseInt(taskId)) || isNaN(parseInt(expCost)) || isNaN(parseInt(resultCost)) 
             || isNaN(parseInt(resultYear)) || isNaN(parseInt(resultMonth)) || isNaN(parseInt(resultDay))) {

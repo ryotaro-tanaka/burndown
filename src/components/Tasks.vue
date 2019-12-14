@@ -7,9 +7,9 @@
             <input type="button" value="delete"
             @click="deleteTask()">
             <input type="button" value="  ↑  "
-            @click="updateTaskId(1)">
-            <input type="button" value="  ↓  "
             @click="updateTaskId(-1)">
+            <input type="button" value="  ↓  "
+            @click="updateTaskId(1)">
         </div>
         <table>
             <tbody>
@@ -93,9 +93,18 @@ export default {
             this.$store.dispatch('insertTask');
         },
         deleteTask () {
+            if(this.targetTaskId <= 0) return;
             this.$store.dispatch('deleteTask', {taskId: this.targetTaskId});
         },
         updateTaskId (amount) {
+            if(this.targetTaskId <= 0) return;
+            this.$store.dispatch('updateTaskId', {
+                    oldTaskId: this.targetTaskId,
+                    newTaskId: this.targetTaskId + amount
+                })
+                .then((newTaskId) => {
+                    this.changeTarget(newTaskId);
+                });
         }
     }
 }
