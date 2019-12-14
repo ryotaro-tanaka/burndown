@@ -7,7 +7,11 @@ const db = new sqlite3.Database('db/sch.db');
 const weeklyModule = {
     state: {
         count: 100,
-        weekly: []
+        weekly: [{
+            week_id: -1,
+            name: '',
+            is_work: 0
+        }]
     },
     getters: {},
     mutations: {
@@ -71,10 +75,13 @@ const startDayModule = {
 
 const tasksModule = {
     state: {
-        tasksTableName: 'Tasks',
         tasks: []
     },
-    getters: {},
+    getters: {
+        // tasksCount: state => {
+        //     return state.tasks.length;
+        // }
+    },
     mutations: {
         SET_TASKS (state, status) {
             state.tasks = status;
@@ -89,39 +96,58 @@ const tasksModule = {
                 });
             });
         },
-        insertTask ({commit}, {task_id, name, expectationsCost/*, resultCost, isCompleted*/}){
-            console.log(commit);
+        insertTask () {
             db.serialize(() => {
-                db.prepare('update Tasks set task_id = -(task_id + 1) where task_id >= ?')
-                    .run(task_id);
-                db.prepare('update Tasks set task_id = -(task_id) where task_id < 0')
-                    .run();
-                db.prepare(`insert into Tasks (task_id, name, expectations_cost, result_cost, is_completed) values(?, ?, ?, 0, 0)`)
-                    .run(task_id, name, expectationsCost)
+                db.prepare('insert into Tasks (name, exp_cost, result_cost, is_completed, result_year, result_month, result_day) values ("new task", 0, 0, 0, 0, 0, 0)')
+                    .run()
                     .finalize();
             });
             this.dispatch('setTasks');
         },
-        deleteTask ({commit}, {task_id}) {
-            console.log(commit);
+        deleteTask (context, {taskId}) {
             db.serialize(() => {
                 db.prepare('delete from Tasks where task_id = ?')
-                    .run(task_id);
-                db.prepare('update Tasks set task_id = task_id - 1 where task_id >= ?')
-                    .run(task_id)
+                    .run(taskId);
+                db.prepare('update Tasks set task_id = task_id - 1 where task_id > ?')
+                    .run(taskId)
                     .finalize();
             });
-            this.dispatch('setTasks');
+            this.dispatch({type:'setTasks', fake:context});
         },
-        updateResult ({commit}, {task_id, result_cost}) {
-            console.log(commit);
+        updateTaskId(context, {oldTaskId, newTaskId}) {
+            //TODO: incomplete promise
+            return new Promise((resolve, reject) => {
+                if(oldTaskId <= 0 || newTaskId <= 0 || oldTaskId === newTaskId) reject();
+
+                db.serialize(() => {
+                    db.prepare('update Tasks set task_id = -? where task_id = ?')
+                        .run(newTaskId, oldTaskId);
+                    db.prepare('update Tasks set task_id = -? where task_id = ?')
+                        .run(oldTaskId, newTaskId);
+                    db.prepare('update Tasks set task_id = -(task_id) where task_id < 0')
+                        .run()
+                        .finalize();
+                });
+                
+                this.dispatch({type:'setTasks', fake:context});
+
+                resolve(newTaskId);
+            });
+        },
+        updateTaskValues(context, {taskId, name, expCost, resultCost, resultYear, resultMonth, resultDay}) {
+            if(isNaN(parseInt(taskId)) || isNaN(parseInt(expCost)) || isNaN(parseInt(resultCost)) 
+            || isNaN(parseInt(resultYear)) || isNaN(parseInt(resultMonth)) || isNaN(parseInt(resultDay))) {
+                return;
+            }
+
             db.serialize(() => {
-                let isCompleted = (result_cost !== 0);
-                db.prepare('update Tasks set result_cost = ?, is_completed = ? where task_id = ?')
-                    .run(result_cost, isCompleted, task_id)
+                let isCompleted = (resultCost !== 0) && (resultYear >= 1970) && (resultMonth >= 0) && (resultDay > 0);
+                db.prepare('update Tasks set name=?, exp_cost=?, result_cost=?, is_completed=?, result_year=?, result_month=?, result_day=? where task_id=?;')
+                    .run(name, expCost, resultCost, isCompleted, resultYear, resultMonth, resultDay, taskId)
                     .finalize();
             });
-            this.dispatch('setTasks');
+
+            this.dispatch({type:'setTasks', fake:context});
         }
     }
 }
@@ -132,5 +158,9 @@ export default new Vuex.Store({
         weekly: weeklyModule,
         startDay: startDayModule,
         tasks: tasksModule
+    },
+    state: {
+        idealPoint: 10,
+        daysCount : 14 // how to change?
     }
 });

@@ -1,37 +1,32 @@
 <template>
   <div id="app">
-    <p>Weekly</p>
-    <div v-for="week in weekly" :key="'week' + week.week_id">
-      {{ `${week.week_id} : ${week.name}` }}
-    </div>
-    <p>StartDay -> {{ startDay }}</p>
-    <p>Tasks</p>
-    <div v-for="task in tasks" :key="'task' + task.task_id">
-      {{`
-        ${task.task_id}(${task.name}) : 
-        ${task.expectations_cost} -> ${task.result_cost}
-      ` }}
-    </div>
-    <input type="button" value="update" @click="updateResult()">
+    <Tasks/>
+    <Days/>
+
+    <!-- <input type="button" value="update" @click="updateResult()">
     <input type="button" value="insert" @click="insertTask()">
-    <input type="button" value="delete" @click="deleteTask()">
+    <input type="button" value="delete" @click="deleteTask()"> -->
   </div>
 </template>
 
 <script>
+import Tasks from './components/Tasks.vue'
+import Days from './components/Days.vue'
 
 export default {
   name: 'app',
   components: {
+    Tasks,
+    Days
   },
   // data () { return{} },
   computed: {
-    weekly() {
-      return this.$store.state.weekly.weekly;
-    },
-    startDay () {
-      return this.$store.getters.startDay;
-    },
+    // weekly() {
+    //   return this.$store.state.weekly.weekly;
+    // },
+    // startDay () {
+    //   return this.$store.getters.startDay;
+    // },
     tasks () {
       return this.$store.state.tasks.tasks;
     }
@@ -42,26 +37,35 @@ export default {
     this.$store.dispatch('setTasks');
   },
   methods: {
-    updateResult() {
-      this.$store.dispatch('updateResult', {task_id:2, result_cost:20});
-    },
-    insertTask () {
-      this.$store.dispatch('insertTask', {task_id:4, name:'work-test', expectationsCost:20});
-    },
-    deleteTask () {
-      this.$store.dispatch('deleteTask', {task_id:4});
-    }
+    // updateResult() {
+    //   this.$store.dispatch('updateResult', {task_id:2, result_cost:20});
+    // },
+    // insertTask () {
+    //   this.$store.dispatch('insertTask', {task_id:4, name:'work-test', expectationsCost:20});
+    // },
+    // deleteTask () {
+    //   this.$store.dispatch('deleteTask', {task_id:4});
+    // }
   }
 }
 </script>
 
-<style>
+<style lang="scss" >
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
 #app {
   font-family: 'Avenir', Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
   color: #2c3e50;
-  margin-top: 60px;
+  // margin-top: 60px;
+}
+
+#tasks {
+  z-index: 1;
 }
 </style>
