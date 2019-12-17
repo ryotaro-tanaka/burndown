@@ -43,7 +43,7 @@ export default {
         }
     },
     mounted() {
-        this.maxWidth = this.$el.getElementsByClassName('day')[0].offsetWidth * this.daysCount
+        this.maxWidth = this.$el.getElementsByClassName('day')[0].offsetWidth * this.daysCount;
     },
     methods: {}
 }

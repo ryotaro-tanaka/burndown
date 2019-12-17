@@ -27,6 +27,8 @@ export default {
 </script>
 
 <style lang="scss" >
+@import './global.scss';
+
 * {
   margin: 0;
   padding: 0;

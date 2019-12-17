@@ -1,6 +1,8 @@
 <template>
-    <div id="cost">
-        <div id="label">
+    <div id="cost"
+    :style="{height: maxHeight + 'px'}">
+        <div class="label"
+        :style="{height: maxHeight + 'px'}">
             <div v-for="item in splitCost" :key="item.point"
             :class="{checkpoint: item.check}"
             class="cost">
@@ -14,6 +16,11 @@
 
 <script>
 export default {
+    data () {
+        return {
+            maxHeight: 0
+        }
+    },
     computed: {
         idealPoint () {
             return this.$store.state.idealPoint;
@@ -30,9 +37,23 @@ export default {
                     check: i % 5 === 0
                 });
             }
-            console.log(this.idealPoint);
             return arg;
+        },
+        windowWidth () {
+            return this.$store.state.windowWidth;
+        },
+        windowHeight () {
+            return this.$store.state.windowHeight;
         }
+    },
+    updated () {console.log('a')
+        if (this.splitCost.length === 0) return;
+        this.$store.dispatch('setwindowHeight', {
+            val:
+                this.$el.getElementsByClassName('cost')[0].offsetHeight * this.splitCost.length
+                + parseInt(window.getComputedStyle(this.$el.getElementsByClassName('label')[0]).marginTop)
+        });
+        // this.maxHeight = this.$el.getElementsByClassName('cost')[0].offsetHeight * this.splitCost.length;
     }
 }
 </script>
@@ -42,11 +63,17 @@ export default {
 
 #cost {
     position: absolute;
-    top: $headspace-height;
-    left: $tasks-width;
-    #label {
+    top: 0;
+    left: 0;
+    // padding-top: $headspace-height;
+    // padding-left: $tasks-width;
+    // width: 1000px;
+    .label {
         position: sticky;
         width: $headspace-width;
+        left: $tasks-width;
+        top: 0;
+        margin-top: $headspace-height;
         .cost {
             border-bottom: thin solid gray;
             height: $onecost-height;
