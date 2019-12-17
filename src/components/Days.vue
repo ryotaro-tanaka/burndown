@@ -1,7 +1,7 @@
 <template>
     <div id="days">
         <div id="label"
-        :style="{width: ''}">
+        :style="{width: maxWidth + 'px'}">
             <div class="day"
             v-for="day in days" :key="day.val">
                 {{ day.val }}({{ day.isWork }})
@@ -12,11 +12,19 @@
 
 <script>
 export default {
+    data () {
+        return {
+            maxWidth: 0
+        }
+    },
     computed: {
+        daysCount () {
+            return this.$store.state.daysCount;
+        },
         days () {
             const weekly = this.$store.state.weekly.weekly;
             const startDay = this.$store.getters.startDay;
-            const daysCount = this.$store.state.daysCount;//temporary
+            const daysCount = this.daysCount;
 
             let days = [];
             for (let i=0; i<daysCount; i++) {
@@ -32,10 +40,12 @@ export default {
             }
 
             return days;
-        },
-
+        }
     },
-    methoeds: {}
+    mounted() {
+        this.maxWidth = this.$el.getElementsByClassName('day')[0].offsetWidth * this.daysCount
+    },
+    methods: {}
 }
 </script>
 
@@ -46,7 +56,6 @@ export default {
     position: absolute;
     top: 0;
     left: $tasks-width + $headspace-width;
-    color: red;
     #label {
         position: sticky;
         display: flex;
