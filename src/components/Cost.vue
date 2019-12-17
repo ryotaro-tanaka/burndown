@@ -1,0 +1,63 @@
+<template>
+    <div id="cost">
+        <div id="label">
+            <div v-for="item in splitCost" :key="item.point"
+            :class="{checkpoint: item.check}"
+            class="cost">
+                <span>
+                    {{ item.point }}
+                </span>
+            </div>
+        </div>
+    </div>    
+</template>
+
+<script>
+export default {
+    computed: {
+        idealPoint () {
+            return this.$store.state.idealPoint;
+        },
+        allExpectedCost () {
+            return this.$store.getters.allExpectedCost;
+        },
+        splitCost () {
+            let arg = [];
+            const max = Math.ceil(this.allExpectedCost / this.idealPoint)
+            for (let i=max; i>0; i--) {
+                arg.push({
+                    point: i * this.idealPoint,
+                    check: i % 5 === 0
+                });
+            }
+            console.log(this.idealPoint);
+            return arg;
+        }
+    }
+}
+</script>
+
+<style lang="scss" scoped>
+@import '../global.scss';
+
+#cost {
+    position: absolute;
+    top: $headspace-height;
+    left: $tasks-width;
+    #label {
+        position: sticky;
+        width: $headspace-width;
+        .cost {
+            border-bottom: thin solid gray;
+            height: $onecost-height;
+            min-height: $onecost-height;
+            span {
+                position: relative;
+                font-size: 1rem;
+                height: 1rem;
+                top: -0.5rem;
+            }
+        }
+    }
+}
+</style>

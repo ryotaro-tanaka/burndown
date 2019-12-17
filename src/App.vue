@@ -2,18 +2,21 @@
   <div id="app">
     <Tasks/>
     <Days/>
+    <Cost/>
   </div>
 </template>
 
 <script>
 import Tasks from './components/Tasks.vue'
 import Days from './components/Days.vue'
+import Cost from './components/Cost.vue'
 
 export default {
   name: 'app',
   components: {
     Tasks,
-    Days
+    Days,
+    Cost
   },
   created () {
     this.$store.dispatch('setWeekly');

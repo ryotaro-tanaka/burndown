@@ -81,6 +81,9 @@ const tasksModule = {
         // tasksCount: state => {
         //     return state.tasks.length;
         // }
+        allExpectedCost: state => {
+            return state.tasks.reduce((p, task) => p + task.exp_cost, 0);
+        }
     },
     mutations: {
         SET_TASKS (state, status) {
