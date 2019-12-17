@@ -1,7 +1,8 @@
 <template>
-    <div id="days">
-        <div id="label"
-        :style="{width: maxWidth + 'px'}">
+    <div id="days"
+    :style="{height: windowHeight + 'px'}">
+        <div class="label"
+        :style="{width: windowWidth + 'px'}">
             <div class="day"
             v-for="day in days" :key="day.val">
                 {{ day.val }}({{ day.isWork }})
@@ -12,11 +13,6 @@
 
 <script>
 export default {
-    data () {
-        return {
-            maxWidth: 0
-        }
-    },
     computed: {
         daysCount () {
             return this.$store.state.daysCount;
@@ -40,10 +36,19 @@ export default {
             }
 
             return days;
+        },
+        windowWidth () {
+            return this.$store.state.graphWidth;
+        },
+        windowHeight () {
+            return this.$store.state.graphHeight;
         }
     },
-    mounted() {
-        this.maxWidth = this.$el.getElementsByClassName('day')[0].offsetWidth * this.daysCount;
+    updated() {
+        if (this.daysCount === 0) return;
+        this.$store.dispatch('setGraphWidth', {val: 
+            this.$el.getElementsByClassName('day')[0].offsetWidth * this.daysCount
+        })
     },
     methods: {}
 }
@@ -55,11 +60,14 @@ export default {
 #days {
     position: absolute;
     top: 0;
-    left: $tasks-width + $headspace-width;
-    #label {
+    left: 0;
+    .label {
         position: sticky;
         display: flex;
         height: $headspace-height;
+        top: 0;
+        left: 0;
+        margin-left: $headspace-width;
         .day {
             border-bottom: medium solid black;
             border-right: thin solid gray;
