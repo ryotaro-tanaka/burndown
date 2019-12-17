@@ -1,8 +1,8 @@
 <template>
     <div id="days"
-    :style="{height: windowHeight + 'px'}">
+    :style="{height: graphHeight + 'px'}">
         <div class="label"
-        :style="{width: windowWidth + 'px'}">
+        :style="{width: graphWidth + 'px'}">
             <div class="day"
             v-for="day in days" :key="day.val">
                 {{ day.val }}({{ day.isWork }})
@@ -37,10 +37,10 @@ export default {
 
             return days;
         },
-        windowWidth () {
+        graphWidth () {
             return this.$store.state.graphWidth;
         },
-        windowHeight () {
+        graphHeight () {
             return this.$store.state.graphHeight;
         }
     },
@@ -67,7 +67,7 @@ export default {
         height: $headspace-height;
         top: 0;
         left: 0;
-        margin-left: $headspace-width;
+        margin-left: $headspace-width + $tasks-width;
         .day {
             border-bottom: medium solid black;
             border-right: thin solid gray;

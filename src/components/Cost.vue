@@ -1,8 +1,8 @@
 <template>
     <div id="cost"
-    :style="{height: windowHeight + 'px'}">
+    :style="{width: graphWidth + 'px'}">
         <div class="label"
-        :style="{height: windowHeight + 'px'}">
+        :style="{height: graphHeight + 'px'}">
             <div v-for="item in splitCost" :key="item.point"
             :class="{checkpoint: item.check}"
             class="cost">
@@ -34,10 +34,14 @@ export default {
             }
             return arg;
         },
-        windowWidth () {
-            return this.$store.state.graphWidth;
+        graphWidth () {
+            const graphWidth = this.$store.state.graphWidth;
+
+            if (this.splitCost.length === 0) return graphWidth;
+            return graphWidth
+                + parseInt(window.getComputedStyle(this.$el.getElementsByClassName('label')[0]).left);
         },
-        windowHeight () {
+        graphHeight () {
             return this.$store.state.graphHeight;
         }
     },
@@ -45,9 +49,7 @@ export default {
         if (this.splitCost.length === 0) return;
         this.$store.dispatch('setGraphHeight', {val:
             this.$el.getElementsByClassName('cost')[0].offsetHeight * this.splitCost.length
-            + parseInt(window.getComputedStyle(this.$el.getElementsByClassName('label')[0]).marginTop)
         });
-        // this.maxHeight = this.$el.getElementsByClassName('cost')[0].offsetHeight * this.splitCost.length;
     }
 }
 </script>
@@ -59,9 +61,6 @@ export default {
     position: absolute;
     top: 0;
     left: 0;
-    // padding-top: $headspace-height;
-    // padding-left: $tasks-width;
-    // width: 1000px;
     .label {
         position: sticky;
         width: $headspace-width;
