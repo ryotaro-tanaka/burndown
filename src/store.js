@@ -81,6 +81,9 @@ const tasksModule = {
         // tasksCount: state => {
         //     return state.tasks.length;
         // }
+        allExpectedCost: state => {
+            return state.tasks.reduce((p, task) => p + task.exp_cost, 0);
+        }
     },
     mutations: {
         SET_TASKS (state, status) {
@@ -161,6 +164,24 @@ export default new Vuex.Store({
     },
     state: {
         idealPoint: 10,
-        daysCount : 14 // how to change?
+        daysCount : 14, // how to change?
+        windowWidth: 0,
+        windowHeight:0
+    },
+    mutations: {
+        SET_WINDOWWIDTH (state, status) {
+            state.windowWidth = status;
+        },
+        SET_WINDOWHEIGHT (state, status) {
+            state.windowHeight = status;
+        }
+    },
+    actions: {
+        setwindowWidth ({commit}, {val}) {
+            commit('SET_WINDOWWIDTH', val)
+        },
+        setwindowHeight ({commit}, {val}) {
+            commit('SET_WINDOWHEIGHT', val)
+        }
     }
 });
