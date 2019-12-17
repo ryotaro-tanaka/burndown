@@ -165,23 +165,23 @@ export default new Vuex.Store({
     state: {
         idealPoint: 10,
         daysCount : 14, // how to change?
-        windowWidth: 0,
-        windowHeight:0
+        graphWidth: 0,
+        graphHeight:0
     },
     mutations: {
-        SET_WINDOWWIDTH (state, status) {
-            state.windowWidth = status;
+        SET_GRAPHWIDTH (state, status) {
+            state.graphWidth = status;
         },
-        SET_WINDOWHEIGHT (state, status) {
-            state.windowHeight = status;
+        SET_GRAPHHEIGHT (state, status) {
+            state.graphHeight = status;
         }
     },
     actions: {
-        setwindowWidth ({commit}, {val}) {
-            commit('SET_WINDOWWIDTH', val)
+        setGraphWidth ({commit}, {val}) {
+            commit('SET_GRAPHWIDTH', val);
         },
-        setwindowHeight ({commit}, {val}) {
-            commit('SET_WINDOWHEIGHT', val)
+        setGraphHeight ({commit}, {val}) {
+            commit('SET_GRAPHHEIGHT', val);
         }
     }
 });

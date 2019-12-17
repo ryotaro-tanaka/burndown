@@ -1,8 +1,8 @@
 <template>
     <div id="cost"
-    :style="{height: maxHeight + 'px'}">
+    :style="{height: windowHeight + 'px'}">
         <div class="label"
-        :style="{height: maxHeight + 'px'}">
+        :style="{height: windowHeight + 'px'}">
             <div v-for="item in splitCost" :key="item.point"
             :class="{checkpoint: item.check}"
             class="cost">
@@ -16,11 +16,6 @@
 
 <script>
 export default {
-    data () {
-        return {
-            maxHeight: 0
-        }
-    },
     computed: {
         idealPoint () {
             return this.$store.state.idealPoint;
@@ -40,18 +35,17 @@ export default {
             return arg;
         },
         windowWidth () {
-            return this.$store.state.windowWidth;
+            return this.$store.state.graphWidth;
         },
         windowHeight () {
-            return this.$store.state.windowHeight;
+            return this.$store.state.graphHeight;
         }
     },
-    updated () {console.log('a')
+    updated () {
         if (this.splitCost.length === 0) return;
-        this.$store.dispatch('setwindowHeight', {
-            val:
-                this.$el.getElementsByClassName('cost')[0].offsetHeight * this.splitCost.length
-                + parseInt(window.getComputedStyle(this.$el.getElementsByClassName('label')[0]).marginTop)
+        this.$store.dispatch('setGraphHeight', {val:
+            this.$el.getElementsByClassName('cost')[0].offsetHeight * this.splitCost.length
+            + parseInt(window.getComputedStyle(this.$el.getElementsByClassName('label')[0]).marginTop)
         });
         // this.maxHeight = this.$el.getElementsByClassName('cost')[0].offsetHeight * this.splitCost.length;
     }
