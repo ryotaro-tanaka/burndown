@@ -67,6 +67,7 @@ export default {
         if (this.splitCost.length === 0) return;
         this.$store.dispatch('setGraphHeight', {val:
             this.$el.getElementsByClassName('cost')[0].offsetHeight * this.splitCost.length
+            // parseInt( getComputedStyle(document.documentElement).getPropertyValue('--days-width')) * this.splitCost.length
         });
     }
 }
@@ -103,7 +104,6 @@ export default {
     }
     .memory {
         position: absolute;
-        width: 100px;
         left: $tasks-width + $headspace-width;
         top: 0;
         margin-top: $headspace-height;

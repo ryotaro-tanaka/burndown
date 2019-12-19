@@ -1,12 +1,15 @@
+// @import '/global.css';
+
 $tasks-width: 480px;
-// $tasks-width: 36px;
 
 $headspace-height: 24px;
 $headspace-width: 48px;
 
-$days-width: 96px;
-$onecost-height: 96px;
+$days-width: var(--days-width);
+$onecost-height: var(--onecost-height);
 
 
 $frame-color: white;
 $frame-char-color: black;
+
+$ideal-color: green;
