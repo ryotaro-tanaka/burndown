@@ -2,55 +2,33 @@
   <div id="app">
     <Tasks/>
     <Days/>
-
-    <!-- <input type="button" value="update" @click="updateResult()">
-    <input type="button" value="insert" @click="insertTask()">
-    <input type="button" value="delete" @click="deleteTask()"> -->
+    <Cost/>
   </div>
 </template>
 
 <script>
 import Tasks from './components/Tasks.vue'
 import Days from './components/Days.vue'
+import Cost from './components/Cost.vue'
 
 export default {
   name: 'app',
   components: {
     Tasks,
-    Days
-  },
-  // data () { return{} },
-  computed: {
-    // weekly() {
-    //   return this.$store.state.weekly.weekly;
-    // },
-    // startDay () {
-    //   return this.$store.getters.startDay;
-    // },
-    tasks () {
-      return this.$store.state.tasks.tasks;
-    }
+    Days,
+    Cost
   },
   created () {
     this.$store.dispatch('setWeekly');
     this.$store.dispatch('setStartDay');
     this.$store.dispatch('setTasks');
-  },
-  methods: {
-    // updateResult() {
-    //   this.$store.dispatch('updateResult', {task_id:2, result_cost:20});
-    // },
-    // insertTask () {
-    //   this.$store.dispatch('insertTask', {task_id:4, name:'work-test', expectationsCost:20});
-    // },
-    // deleteTask () {
-    //   this.$store.dispatch('deleteTask', {task_id:4});
-    // }
   }
 }
 </script>
 
 <style lang="scss" >
+@import './global.scss';
+
 * {
   margin: 0;
   padding: 0;
@@ -66,6 +44,12 @@ export default {
 }
 
 #tasks {
+  z-index: 2;
+}
+#days {
   z-index: 1;
+}
+#cost {
+  z-index: 0;
 }
 </style>

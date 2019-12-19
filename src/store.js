@@ -81,6 +81,9 @@ const tasksModule = {
         // tasksCount: state => {
         //     return state.tasks.length;
         // }
+        allExpectedCost: state => {
+            return state.tasks.reduce((p, task) => p + task.exp_cost, 0);
+        }
     },
     mutations: {
         SET_TASKS (state, status) {
@@ -161,6 +164,24 @@ export default new Vuex.Store({
     },
     state: {
         idealPoint: 10,
-        daysCount : 14 // how to change?
+        daysCount : 14, // how to change?
+        graphWidth: 0,
+        graphHeight:0
+    },
+    mutations: {
+        SET_GRAPHWIDTH (state, status) {
+            state.graphWidth = status;
+        },
+        SET_GRAPHHEIGHT (state, status) {
+            state.graphHeight = status;
+        }
+    },
+    actions: {
+        setGraphWidth ({commit}, {val}) {
+            commit('SET_GRAPHWIDTH', val);
+        },
+        setGraphHeight ({commit}, {val}) {
+            commit('SET_GRAPHHEIGHT', val);
+        }
     }
 });
