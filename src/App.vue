@@ -44,6 +44,12 @@ export default {
 }
 
 #tasks {
+  z-index: 2;
+}
+#days {
   z-index: 1;
+}
+#cost {
+  z-index: 0;
 }
 </style>
