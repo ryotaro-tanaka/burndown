@@ -107,6 +107,7 @@ export default {
         left: $tasks-width + $headspace-width;
         top: 0;
         margin-top: $headspace-height;
+        background: transparent;
         z-index: -1;
         .cost {
             border-bottom: thin solid $frame-char-color;
