@@ -61,6 +61,7 @@ export default {
     position: absolute;
     top: 0;
     left: 0;
+    pointer-events: none;
     .label {
         position: sticky;
         display: flex;
