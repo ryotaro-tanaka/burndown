@@ -83,6 +83,16 @@ const tasksModule = {
         // }
         allExpectedCost: state => {
             return state.tasks.reduce((p, task) => p + task.exp_cost, 0);
+        },
+        allResultCost: state => {
+            return state.tasks.reduce((p, task) => p + task.result_cost, 0);
+        },
+        lastDay: state => {
+            const compuletedTasks = state.tasks.filter(task => {if(task.is_completed) return task;})
+            return compuletedTasks.reduce((p, task) => 
+                p.getTime() > new Date(task.result_year, task.result_month, task.result_day).getTime()?
+                p:new Date(task.result_year, task.result_month, task.result_day) 
+                ,new Date(1970, 0, 1));
         }
     },
     mutations: {
