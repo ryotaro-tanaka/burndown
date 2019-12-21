@@ -1,6 +1,6 @@
 // @import '/global.css';
 
-$tasks-width: 48px;
+$tasks-width: 480px;
 
 $headspace-height: 24px;
 $headspace-width: 48px;
@@ -13,4 +13,4 @@ $frame-color: white;
 $frame-char-color: black;
 
 $ideal-color: green; // = var(--ideal-color)
-$expected-color: orange;
+$expected-color: orange; // = var(--expected-color)

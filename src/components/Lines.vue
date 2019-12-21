@@ -13,14 +13,17 @@
         <!-- <div id="expected-line"
         :style="{
             top: idealTop + 'px',
-            borderTopWidth: idealHeight + 'px',
-            borderBottomWidth: idealHeight + 'px',
+            borderTopWidth: ((idealHeight-idealTop)/2) + 'px',
+            borderBottomWidth: ((idealHeight-idealTop)/2) + 'px',
             borderLeftWidth: expectedWidth + 'px',
             borderRightWidth: expectedWidth + 'px'
         }">
         </div> -->
-        <canvas id="canvas"
+        <canvas id="canvas-ideal"
         :style="{width:idealWidth+'px', height:idealHeight+'px'}">
+        </canvas>
+        <canvas id="canvas-expected"
+        :style="{width:expectedWidth+'px', height:idealHeight+'px'}">
         </canvas>
     </div>
 </template>
@@ -53,45 +56,53 @@ export default {
         idealWidth () {
             const days = Math.ceil(this.allExpectedCost / this.idealPoint);
             const dayWidth = parseInt(getComputedStyle(document.documentElement).getPropertyValue('--days-width'));
-            // return (days * dayWidth) / 2;
             return (days * dayWidth);
         },
         idealHeight () {
-            // return (this.graphHeight - this.idealTop) / 2;
-            // return (this.graphHeight - this.idealTop);
             return this.graphHeight;
         },
         //expected line
-        //finish -> all expected cost / (all result cost / elapsed day count)
-        expectedWidth () {
-            const allResultCost = this.$store.getters.allResultCost;
-            const startDay = this.$store.getters.startDay;
-            const lastDay = this.$store.getters.lastDay;
+        ////finish -> all expected cost / (all result cost / elapsed day count)
+        ////finish -> all expected cost / (expected cost to now / elapsed day count)
+        // expectedWidth () {
+        //     const allResultCost = this.$store.getters.allResultCost;
+        //     const startDay = this.$store.getters.startDay;
+        //     const lastDay = this.$store.getters.lastDay;
 
-            const elapsedDaysCount = (lastDay.getTime() - startDay.getTime()) / (24 * 60 * 60 * 1000);
+        //     const elapsedDaysCount = (lastDay.getTime() - startDay.getTime()) / (24 * 60 * 60 * 1000);
             
-            if(allResultCost === 0 || elapsedDaysCount === 0) return 0;
-            // console.log(startDay.getTime() / 60000);
-            // console.log(lastDay)
-            // console.log(this.allExpectedCost / (allResultCost / elapsedDaysCount));
+        //     if(allResultCost === 0 || elapsedDaysCount === 0) return 0;
 
-            const dayWidth = parseInt(getComputedStyle(document.documentElement).getPropertyValue('--days-width'));
-            return (this.allExpectedCost / (allResultCost / elapsedDaysCount)) * dayWidth;
+        //     const dayWidth = parseInt(getComputedStyle(document.documentElement).getPropertyValue('--days-width'));
+        //     return (this.allExpectedCost / (allResultCost / elapsedDaysCount)) * dayWidth;
+        // },
+        //finish -> result cost to now / expected cost to now
+        expectedWidth () {
+            const result = this.$store.getters.resultCostToNow;
+            const expected = this.$store.getters.expectedCostToNow;
+
+            if (result === 0 || expected === 0) return 0;
+
+            // const dayWidth = parseInt(getComputedStyle(document.documentElement).getPropertyValue('--days-width'));
+            return this.idealWidth * (result / expected);
+
         },
         //result
     },
     mounted () {
         console.warn('aaaaaaaaaaaa')
         this.idealLine();
+        this.expectedLine();
     },
     updated () {
         console.error('iiiiiiiii');
         this.idealLine();
+        this.expectedLine();
     },
     methods: {
         idealLine () {
-            const canvas = document.getElementById( "canvas" );
-            const ctx = canvas.getContext( "2d" );
+            const canvas = document.getElementById('canvas-ideal');
+            const ctx = canvas.getContext('2d');
 
             canvas.height = this.idealHeight;
             canvas.width = this.idealWidth;
@@ -100,6 +111,20 @@ export default {
             ctx.beginPath();
             ctx.moveTo(0, this.idealTop);
             ctx.lineTo(this.idealWidth, this.idealHeight);
+            ctx.closePath();
+            ctx.stroke();
+        },
+        expectedLine () {
+            const canvas = document.getElementById('canvas-expected');
+            const ctx = canvas.getContext('2d');
+
+            canvas.height = this.idealHeight;
+            canvas.width = this.expectedWidth;
+            ctx.strokeStyle = getComputedStyle(document.documentElement).getPropertyValue('--expected-color');
+
+            ctx.beginPath();
+            ctx.moveTo(0, this.idealTop);
+            ctx.lineTo(this.expectedWidth, this.idealHeight);
             ctx.closePath();
             ctx.stroke();
         }
@@ -126,18 +151,22 @@ export default {
     //     border-left: solid rgba($color: $ideal-color, $alpha: 0.2);
     //     z-index: 1;
     // }
-    #expected-line {
+    // #expected-line {
+    //     position: absolute;
+    //     left: 0;
+    //     width: 0;
+    //     height: 0;
+    //     border-top: solid transparent;
+    //     border-right: solid transparent;
+    //     border-bottom: solid rgba($color: $expected-color, $alpha: 0.2);
+    //     border-left: solid rgba($color: $expected-color, $alpha: 0.2);
+    //     z-index: 0;
+    // }
+    #canvas-ideal, #canvas-expected {
         position: absolute;
+        top: 0;
         left: 0;
-        width: 0;
-        height: 0;
-        border-top: solid transparent;
-        border-right: solid transparent;
-        border-bottom: solid rgba($color: $expected-color, $alpha: 0.2);
-        border-left: solid rgba($color: $expected-color, $alpha: 0.2);
-        z-index: 0;
-    }
-    #canvas {
+        // pointer-events: none;
     }
 }
 </style>
