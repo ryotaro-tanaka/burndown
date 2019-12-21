@@ -1,15 +1,16 @@
 <template>
-    <div id="lines">
-        <div id="ideal-line"
+    <div id="lines"
+    :style="{width:graphWidth+'px', height:graphHeight+'px'}">
+        <!-- <div id="ideal-line"
         :style="{
             top: idealTop + 'px',
-            borderTopWidth: idealHeight + 'px',
-            borderBottomWidth: idealHeight + 'px',
-            borderLeftWidth: idealWidth + 'px',
-            borderRightWidth: idealWidth + 'px'
+            borderTopWidth: ((idealHeight-idealTop)/2) + 'px',
+            borderBottomWidth: ((idealHeight-idealTop)/2) + 'px',
+            borderLeftWidth: (idealWidth/2) + 'px',
+            borderRightWidth: (idealWidth/2) + 'px'
         }">
-        </div>
-        <div id="expected-line"
+        </div> -->
+        <!-- <div id="expected-line"
         :style="{
             top: idealTop + 'px',
             borderTopWidth: idealHeight + 'px',
@@ -17,7 +18,10 @@
             borderLeftWidth: expectedWidth + 'px',
             borderRightWidth: expectedWidth + 'px'
         }">
-        </div>
+        </div> -->
+        <canvas id="canvas"
+        :style="{width:idealWidth+'px', height:idealHeight+'px'}">
+        </canvas>
     </div>
 </template>
 
@@ -49,10 +53,13 @@ export default {
         idealWidth () {
             const days = Math.ceil(this.allExpectedCost / this.idealPoint);
             const dayWidth = parseInt(getComputedStyle(document.documentElement).getPropertyValue('--days-width'));
-            return (days * dayWidth) / 2;
+            // return (days * dayWidth) / 2;
+            return (days * dayWidth);
         },
         idealHeight () {
-            return (this.graphHeight - this.idealTop) / 2;
+            // return (this.graphHeight - this.idealTop) / 2;
+            // return (this.graphHeight - this.idealTop);
+            return this.graphHeight;
         },
         //expected line
         //finish -> all expected cost / (all result cost / elapsed day count)
@@ -72,6 +79,30 @@ export default {
             return (this.allExpectedCost / (allResultCost / elapsedDaysCount)) * dayWidth;
         },
         //result
+    },
+    mounted () {
+        console.warn('aaaaaaaaaaaa')
+        this.idealLine();
+    },
+    updated () {
+        console.error('iiiiiiiii');
+        this.idealLine();
+    },
+    methods: {
+        idealLine () {
+            const canvas = document.getElementById( "canvas" );
+            const ctx = canvas.getContext( "2d" );
+
+            canvas.height = this.idealHeight;
+            canvas.width = this.idealWidth;
+            ctx.strokeStyle = getComputedStyle(document.documentElement).getPropertyValue('--ideal-color');
+
+            ctx.beginPath();
+            ctx.moveTo(0, this.idealTop);
+            ctx.lineTo(this.idealWidth, this.idealHeight);
+            ctx.closePath();
+            ctx.stroke();
+        }
     }
 }
 </script>
@@ -84,17 +115,17 @@ export default {
     top: $headspace-height;
     left: $tasks-width + $headspace-width;
     background-color: transparent;
-    #ideal-line {
-        position: absolute;
-        left: 0;
-        width: 0;
-        height: 0;
-        border-top: solid transparent;
-        border-right: solid transparent;
-        border-bottom: solid rgba($color: $ideal-color, $alpha: 0.2);
-        border-left: solid rgba($color: $ideal-color, $alpha: 0.2);
-        z-index: 1;
-    }
+    // #ideal-line {
+    //     position: absolute;
+    //     left: 0;
+    //     width: 0;
+    //     height: 0;
+    //     border-top: solid transparent;
+    //     border-right: solid transparent;
+    //     border-bottom: solid rgba($color: $ideal-color, $alpha: 0.2);
+    //     border-left: solid rgba($color: $ideal-color, $alpha: 0.2);
+    //     z-index: 1;
+    // }
     #expected-line {
         position: absolute;
         left: 0;
@@ -105,6 +136,8 @@ export default {
         border-bottom: solid rgba($color: $expected-color, $alpha: 0.2);
         border-left: solid rgba($color: $expected-color, $alpha: 0.2);
         z-index: 0;
+    }
+    #canvas {
     }
 }
 </style>

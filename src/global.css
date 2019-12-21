@@ -1,4 +1,6 @@
 :root {
     --days-width: 48px;
-    --onecost-height: 48px;
+    --onecost-height: 36px;
+
+    --ideal-color: green;
 }
