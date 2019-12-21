@@ -78,22 +78,9 @@ const tasksModule = {
         tasks: []
     },
     getters: {
-        // tasksCount: state => {
-        //     return state.tasks.length;
-        // }
         allExpectedCost: state => {
             return state.tasks.reduce((p, task) => p + task.exp_cost, 0);
         },
-        // allResultCost: state => {
-        //     return state.tasks.reduce((p, task) => p + task.result_cost, 0);
-        // },
-        // lastDay: state => {
-        //     const compuletedTasks = state.tasks.filter(task => {if(task.is_completed) return task;})
-        //     return compuletedTasks.reduce((p, task) => 
-        //         p.getTime() > new Date(task.result_year, task.result_month, task.result_day).getTime()?
-        //         p:new Date(task.result_year, task.result_month, task.result_day) 
-        //         ,new Date(1970, 0, 1));
-        // },
         expectedCostToNow: state => {
             const compuletedTasks = state.tasks.filter(task => {if(task.is_completed) return task;});
             return compuletedTasks.reduce((p, task) => p + task.exp_cost, 0);
@@ -187,6 +174,9 @@ export default new Vuex.Store({
         graphHeight:0
     },
     mutations: {
+        SET_DAYSCOUNT (state, status) {
+            state.daysCount = status;
+        },
         SET_GRAPHWIDTH (state, status) {
             state.graphWidth = status;
         },
@@ -195,6 +185,10 @@ export default new Vuex.Store({
         }
     },
     actions: {
+        setDaysCount ({commit, state}, {val}) {
+            if (state.daysCount < val)
+                commit('SET_DAYSCOUNT', val);
+        },
         setGraphWidth ({commit}, {val}) {
             commit('SET_GRAPHWIDTH', val);
         },
