@@ -146,7 +146,7 @@ export default {
 
             canvas.height = this.graphHeight;
             canvas.width = this.graphWidth;
-            ctx.strokeStyle = 'red';
+            ctx.strokeStyle = 'navy';
             ctx.lineWidth = 2;
 
             ctx.beginPath();
@@ -183,7 +183,7 @@ export default {
             position: absolute;
             height: 8px;
             width: 8px;
-            background: red;
+            background: navy;
         }
     }
 }

@@ -1,15 +1,19 @@
 <template>
     <div id="tasks">
-        <p>Tasks</p>
-        <div>
-            <input type="button" value="add"
-            @click="insertTask()">
-            <input type="button" value="delete"
+        <!-- <p class="title">Tasks</p> -->
+        <div class="buttons">
+            <a href="#" @click="insertTask()" :disabled="true"> add </a>
+            <a href="#" @click="deleteTask()">delete</a>
+            <a href="#" @click="updateTaskId(-1)">up</a>
+            <a href="#" @click="updateTaskId(1)">down</a>
+            <!-- <input type="button" value="add"
+            @click="insertTask()"> -->
+            <!-- <input type="button" value="delete"
             @click="deleteTask()">
             <input type="button" value="  ↑  "
             @click="updateTaskId(-1)">
             <input type="button" value="  ↓  "
-            @click="updateTaskId(1)">
+            @click="updateTaskId(1)"> -->
         </div>
         <table>
             <tbody>
@@ -119,8 +123,37 @@ export default {
     left: 0;
     width: $tasks-width;
     height: 100vh;
-    border-right: medium solid black;
     background-color: white;
+    box-shadow: 0 0 2px 2px rgba($color: black, $alpha: 0.3);
+    .buttons {
+        height: 36px;
+        a {
+            position: relative;
+            display: inline-block;
+            font-weight: bold;
+            padding: 0.25em 0;
+            text-decoration: none;
+            color: navy;
+            margin: 0 0.5em;
+            width: 48px;
+            &::before {
+                position: absolute;
+                content: '';
+                width: 100%;
+                height: 4px;
+                top:100%;
+                left: 0;
+                border-radius: 3px;
+                // background:#67c5ff;
+                background:navy;
+                transition: .2s;
+            }
+            &:hover::before {
+                top: -webkit-calc(100% - 3px);
+                top: calc(100% - 3px);
+            }
+        }
+    }
 }
 
 table{
@@ -130,15 +163,47 @@ table{
       th {
         border-bottom: thin solid gainsboro;
         padding: 10px 0;
-
+        &:nth-of-type(1) {
+            width: 6%;
+            input {
+                text-align: right;
+            }
+        }
+        &:nth-of-type(2) {
+            width: 48%;
+            input {
+                text-align: center;
+            }
+        }
       }
+      td {
+          &:nth-of-type(1) {
+              width: 11%;
+          }
+          &:nth-of-type(2) {
+              width: 11%;
+          }
+          &:nth-of-type(3) {
+              width: 10%;
+          }
+          &:nth-of-type(4) {
+              width: 7%;
+          }
+          &:nth-of-type(5) {
+              width: 7%;
+          }
+          input {
+              text-align: right;
+          }
+      }
+
       .exp {
-        border-bottom: thin solid green;
+        border-bottom: thin solid $ideal-color;
         text-align: center;
         padding: 10px 0;
       }
       .result {
-        border-bottom: thin solid orange;
+        border-bottom: thin solid $expected-color;
         text-align: center;
         padding: 10px 0;
       }
@@ -157,7 +222,8 @@ table{
       }
 
       &.target {
-          background-color: lightgray;
+        //   background-color: lightgray;
+          background-color: rgba($color: navy, $alpha: 0.2);
       }
   }
 }
