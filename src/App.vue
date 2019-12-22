@@ -6,7 +6,6 @@
     <Lines/>
     <DaysMemory/>
     <CostMemory/>
-    <!-- <Cost/> -->
   </div>
 </template>
 
@@ -17,8 +16,6 @@ import CostLable from './components/CostLabel'
 import Lines from './components/Lines.vue'
 import DaysMemory from './components/DaysMemory'
 import CostMemory from './components/CostMemory'
-// import Days from './components/Days.vue'
-// import Cost from './components/Cost.vue'
 
 export default {
   name: 'app',
@@ -29,7 +26,6 @@ export default {
     Lines,
     DaysMemory,
     CostMemory
-    // Cost,
   },
   created () {
     this.$store.dispatch('setWeekly');
@@ -54,7 +50,6 @@ export default {
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
   color: #2c3e50;
-  // margin-top: 60px;
 }
 
 #tasks {
@@ -75,7 +70,4 @@ export default {
 #cost-memory {
   z-index: 1;
 }
-// #cost {
-//   z-index: 0;
-// }
 </style>

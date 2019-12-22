@@ -8,7 +8,6 @@
             class="cost">
                 <span>
                     {{ item.point }}
-                    <!-- {{ (i === 0)?'':item.point }} -->
                 </span>
             </div>
         </div>
