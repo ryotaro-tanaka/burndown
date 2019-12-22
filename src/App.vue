@@ -3,6 +3,7 @@
     <Tasks/>
     <Days/>
     <Cost/>
+    <Lines/>
   </div>
 </template>
 
@@ -10,13 +11,15 @@
 import Tasks from './components/Tasks.vue'
 import Days from './components/Days.vue'
 import Cost from './components/Cost.vue'
+import Lines from './components/Lines.vue'
 
 export default {
   name: 'app',
   components: {
     Tasks,
     Days,
-    Cost
+    Cost,
+    Lines
   },
   created () {
     this.$store.dispatch('setWeekly');
@@ -26,7 +29,8 @@ export default {
 }
 </script>
 
-<style lang="scss" >
+<style lang="scss">
+@import './global.css';
 @import './global.scss';
 
 * {
@@ -44,6 +48,9 @@ export default {
 }
 
 #tasks {
+  z-index: 3;
+}
+#lines {
   z-index: 2;
 }
 #days {

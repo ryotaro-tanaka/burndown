@@ -57,6 +57,7 @@ export default {
         if (this.daysCount === 0) return;
         this.$store.dispatch('setGraphWidth', {val: 
             this.$el.getElementsByClassName('day')[0].offsetWidth * this.daysCount
+            // parseInt( getComputedStyle(document.documentElement).getPropertyValue('--onecost-height')) * this.daysCount
         })
     },
     methods: {}
