@@ -1,31 +1,35 @@
 <template>
   <div id="app">
     <Tasks/>
-    <!-- <Days/> -->
     <DaysLabel/>
-    <DaysMemory/>
-    <Cost/>
+    <CostLable/>
     <Lines/>
+    <DaysMemory/>
+    <CostMemory/>
+    <!-- <Cost/> -->
   </div>
 </template>
 
 <script>
 import Tasks from './components/Tasks.vue'
-// import Days from './components/Days.vue'
 import DaysLabel from './components/DaysLabal'
-import DaysMemory from './components/DaysMemory'
-import Cost from './components/Cost.vue'
+import CostLable from './components/CostLabel'
 import Lines from './components/Lines.vue'
+import DaysMemory from './components/DaysMemory'
+import CostMemory from './components/CostMemory'
+// import Days from './components/Days.vue'
+// import Cost from './components/Cost.vue'
 
 export default {
   name: 'app',
   components: {
     Tasks,
-    // Days,
     DaysLabel,
+    CostLable,
+    Lines,
     DaysMemory,
-    Cost,
-    Lines
+    CostMemory
+    // Cost,
   },
   created () {
     this.$store.dispatch('setWeekly');
@@ -59,16 +63,19 @@ export default {
 #days-label {
   z-index: 5;
 }
+#cost-label {
+  z-index: 4;
+}
 #lines {
   z-index: 3;
 }
-// #days {
-//   z-index: 1;
-// }
 #days-memory {
   z-index: 2;
 }
-#cost {
-  z-index: 0;
+#cost-memory {
+  z-index: 1;
 }
+// #cost {
+//   z-index: 0;
+// }
 </style>

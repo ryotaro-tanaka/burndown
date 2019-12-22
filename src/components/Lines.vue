@@ -141,7 +141,6 @@ export default {
             ctx.stroke();
         },
         resultLine () {
-            console.table(this.resultPoints)
             const canvas = document.getElementById('canvas-result');
             const ctx = canvas.getContext('2d');
 
