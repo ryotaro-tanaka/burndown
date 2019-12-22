@@ -1,25 +1,31 @@
 <template>
   <div id="app">
     <Tasks/>
-    <Days/>
-    <Cost/>
+    <DaysLabel/>
+    <CostLable/>
     <Lines/>
+    <DaysMemory/>
+    <CostMemory/>
   </div>
 </template>
 
 <script>
 import Tasks from './components/Tasks.vue'
-import Days from './components/Days.vue'
-import Cost from './components/Cost.vue'
+import DaysLabel from './components/DaysLabal'
+import CostLable from './components/CostLabel'
 import Lines from './components/Lines.vue'
+import DaysMemory from './components/DaysMemory'
+import CostMemory from './components/CostMemory'
 
 export default {
   name: 'app',
   components: {
     Tasks,
-    Days,
-    Cost,
-    Lines
+    DaysLabel,
+    CostLable,
+    Lines,
+    DaysMemory,
+    CostMemory
   },
   created () {
     this.$store.dispatch('setWeekly');
@@ -44,19 +50,24 @@ export default {
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
   color: #2c3e50;
-  // margin-top: 60px;
 }
 
 #tasks {
-  z-index: 3;
+  z-index: 6;
+}
+#days-label {
+  z-index: 5;
+}
+#cost-label {
+  z-index: 4;
 }
 #lines {
+  z-index: 3;
+}
+#days-memory {
   z-index: 2;
 }
-#days {
+#cost-memory {
   z-index: 1;
-}
-#cost {
-  z-index: 0;
 }
 </style>
