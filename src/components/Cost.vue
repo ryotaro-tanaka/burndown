@@ -3,11 +3,11 @@
     :style="{width: graphAndHeadWidth + 'px'}">
         <div class="label"
         :style="{height: graphHeight + 'px'}">
-            <div v-for="item in splitCost" :key="item.point"
+            <div v-for="(item, i) in splitCost" :key="item.point"
             :class="{checkpoint: item.check}"
             class="cost">
                 <span>
-                    {{ item.point }}
+                    {{ (i === 0)?'':item.point }}
                 </span>
             </div>
         </div>

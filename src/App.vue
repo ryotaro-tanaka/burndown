@@ -1,7 +1,9 @@
 <template>
   <div id="app">
     <Tasks/>
-    <Days/>
+    <!-- <Days/> -->
+    <DaysLabel/>
+    <DaysMemory/>
     <Cost/>
     <Lines/>
   </div>
@@ -9,7 +11,9 @@
 
 <script>
 import Tasks from './components/Tasks.vue'
-import Days from './components/Days.vue'
+// import Days from './components/Days.vue'
+import DaysLabel from './components/DaysLabal'
+import DaysMemory from './components/DaysMemory'
 import Cost from './components/Cost.vue'
 import Lines from './components/Lines.vue'
 
@@ -17,7 +21,9 @@ export default {
   name: 'app',
   components: {
     Tasks,
-    Days,
+    // Days,
+    DaysLabel,
+    DaysMemory,
     Cost,
     Lines
   },
@@ -48,13 +54,19 @@ export default {
 }
 
 #tasks {
-  z-index: 3;
+  z-index: 6;
+}
+#days-label {
+  z-index: 5;
 }
 #lines {
-  z-index: 2;
+  z-index: 3;
 }
-#days {
-  z-index: 1;
+// #days {
+//   z-index: 1;
+// }
+#days-memory {
+  z-index: 2;
 }
 #cost {
   z-index: 0;
