@@ -7,6 +7,14 @@
         <canvas id="canvas-expected"
         :style="{width: expectedWidth + 'px', height: graphHeight + 'px'}">
         </canvas>
+        <canvas id="canvas-result"
+        :style="{width: graphWidth + 'px', height: graphHeight + 'px'}">
+        </canvas>
+        <div id="result-point">
+            <div v-for="(point, i) in resultPoints" :key="'point' + i"
+            :style="{top: (point.top - 4) + 'px', left: (point.left - 4) + 'px'}">
+            </div>
+        </div>
     </div>
 </template>
 
@@ -52,28 +60,56 @@ export default {
             return Math.ceil(this.idealDaysCount * (result / expected));
         },
         expectedWidth () {
-            // const result = this.$store.getters.resultCostToNow;
-            // const expected = this.$store.getters.expectedCostToNow;
-
-            // if (result === 0 || expected === 0) return 0;
-            // return this.idealWidth * (result / expected);
             const count = this.expectedDaysCount;
             const dayWidth = parseInt(getComputedStyle(document.documentElement).getPropertyValue('--days-width'));
             return count * dayWidth;
         },
         //result
+        resultPoints () { // {top: cost from top, left: day count}
+            // day count
+            const startDay = this.$store.getters.startDay;
+            const lastDay = this.$store.getters.compuletedTasks.reduce((p, task) =>
+                (p.getTime() > new Date(task.result_year, task.result_month, task.result_day).getTime())?
+                    p:new Date(task.result_year, task.result_month, task.result_day)
+                , new Date(1970, 0, 1));
+            const count = (lastDay.getTime() - startDay.getTime()) / (24 * 60 * 60 * 1000);
+
+            // css
+            const costHeight = parseInt(getComputedStyle(document.documentElement).getPropertyValue('--onecost-height'));
+            const dayWidth = parseInt(getComputedStyle(document.documentElement).getPropertyValue('--days-width'));
+
+            // points
+            const points = [];
+            let costFromTop = this.allExpectedCost % this.idealPoint;
+            for (let i=0; i<=count; i++) {
+                const day = new Date(startDay.getFullYear(), startDay.getMonth(), startDay.getDate() + i);
+                const point = this.$store.getters.compuletedTasks.reduce((p, task) => 
+                    (task.result_year === day.getFullYear() && task.result_month === day.getMonth() && task.result_day === day.getDate())?
+                        p + task.exp_cost:p
+                    , 0);
+                costFromTop = costFromTop + point;
+
+                points.push({
+                    top: costFromTop * (costHeight / this.idealPoint),//(result cost + remainder) * (cost height / ideal point)
+                    left: (i + 1) * dayWidth
+                });
+            }
+            return points;
+        }
     },
     mounted () {
         this.idealLine();
         this.expectedLine();
-        this.$store.dispatch('setDaysCount', {val:this.idealDaysCount});
-        this.$store.dispatch('setDaysCount', {val:this.expectedDaysCount});
+        this.$store.dispatch('setDaysCount', {val: this.idealDaysCount});
+        this.$store.dispatch('setDaysCount', {val: this.expectedDaysCount});
+        this.resultLine();
     },
     updated () {
         this.idealLine();
         this.expectedLine();
-        this.$store.dispatch('setDaysCount', {val:this.idealDaysCount});
-        this.$store.dispatch('setDaysCount', {val:this.expectedDaysCount});
+        this.$store.dispatch('setDaysCount', {val: this.idealDaysCount});
+        this.$store.dispatch('setDaysCount', {val: this.expectedDaysCount});
+        this.resultLine();
     },
     methods: {
         idealLine () {
@@ -103,6 +139,23 @@ export default {
             ctx.lineTo(this.expectedWidth, this.graphHeight);
             ctx.closePath();
             ctx.stroke();
+        },
+        resultLine () {
+            console.table(this.resultPoints)
+            const canvas = document.getElementById('canvas-result');
+            const ctx = canvas.getContext('2d');
+
+            canvas.height = this.graphHeight;
+            canvas.width = this.graphWidth;
+            ctx.strokeStyle = 'red';
+            ctx.lineWidth = 2;
+
+            ctx.beginPath();
+            ctx.moveTo(0, this.idealTop);
+            this.resultPoints.forEach(point => {
+                ctx.lineTo(point.left, point.top);
+            });
+            ctx.stroke();
         }
     }
 }
@@ -116,11 +169,23 @@ export default {
     top: $headspace-height;
     left: $tasks-width + $headspace-width;
     background-color: transparent;
-    #canvas-ideal, #canvas-expected {
+    #canvas-ideal, #canvas-expected, #canvas-result, #result-point {
         position: absolute;
         top: 0;
         left: 0;
         // pointer-events: none;
+    }
+    #canvas-result {
+        z-index: 1;
+    }
+    #result-point {
+        z-index: 2;
+        div {
+            position: absolute;
+            height: 8px;
+            width: 8px;
+            background: red;
+        }
     }
 }
 </style>

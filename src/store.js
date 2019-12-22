@@ -81,6 +81,9 @@ const tasksModule = {
         allExpectedCost: state => {
             return state.tasks.reduce((p, task) => p + task.exp_cost, 0);
         },
+        compuletedTasks: state => {
+            return state.tasks.filter(task => {if(task.is_completed) return task;});
+        },
         expectedCostToNow: state => {
             const compuletedTasks = state.tasks.filter(task => {if(task.is_completed) return task;});
             return compuletedTasks.reduce((p, task) => p + task.exp_cost, 0);
