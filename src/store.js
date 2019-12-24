@@ -69,6 +69,15 @@ const startDayModule = {
                     commit('SET_DAY', row.day);
                 });
             });
+        },
+        updateStartDay (context, {year, month, day}) {
+            console.log({year, month, day})
+            db.serialize(() => {
+                db.prepare('update StartDay set year = ?, month = ?, day = ?')
+                    .run(year, month,day)
+                    .finalize();
+            });
+            this.dispatch({type:'setStartDay', fake:context});
         }
     }
 }

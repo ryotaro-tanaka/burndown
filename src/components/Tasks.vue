@@ -8,6 +8,29 @@
         </div>
         <table>
             <tbody>
+                <tr class="start-day">
+                    <th></th>
+                    <th>
+                        <input type="text" value="start date" disabled="disabled">
+                    </th>
+                    <td></td>
+                    <td></td>
+                    <td>
+                        <input type="number" id="start-year"
+                        :value="start_year"
+                        @click="updateStartDay()">
+                    </td>
+                    <td>
+                        <input type="number" id="start-month"
+                        :value="start_month"
+                        @click="updateStartDay()">
+                    </td>
+                    <td>
+                        <input type="number" id="start-day"
+                        :value="start_day"
+                        @click="updateStartDay()">
+                    </td>
+                </tr>
                 <tr v-for="task in tasks" :key="task.task_id" :id="task.task_id"
                 :class="{target: targetTaskId === task.task_id}"
                 @click="changeTarget(task.task_id)">
@@ -73,6 +96,15 @@ export default {
                 resultMonth: tr.getElementsByClassName('result-month')[0].value,
                 resultDay: tr.getElementsByClassName('result-day')[0].value
             }
+        },
+        start_year () {
+            return this.$store.state.startDay.year;
+        },
+        start_month () {
+            return this.$store.state.startDay.month;
+        },
+        start_day () {
+            return this.$store.state.startDay.day;
         }
     },
     methods: {
@@ -99,6 +131,13 @@ export default {
                 })
                 .then((newTaskId) => {
                     this.changeTarget(newTaskId);
+                });
+        },
+        updateStartDay () {
+            this.$store.dispatch('updateStartDay', {
+                    year: document.getElementById('start-year').value,
+                    month: document.getElementById('start-month').value,
+                    day: document.getElementById('start-day').value
                 });
         }
     }
@@ -141,7 +180,6 @@ export default {
                 top:100%;
                 left: 0;
                 border-radius: 3px;
-                // background:#67c5ff;
                 background:navy;
                 transition: .2s;
             }
@@ -156,73 +194,78 @@ export default {
 table{
     position: absolute;
     top: 36px;
-  width: 100%;
-  border-spacing: 0;
-  tr {
-      th {
-        border-bottom: thin solid gainsboro;
-        padding: 10px 0;
-        &:nth-of-type(1) {
-            width: 6%;
+    width: 100%;
+    border-spacing: 0;
+    tr {
+        &.start-day {
+            th, td {
+                border-bottom: thin solid gainsboro;
+            }
+        }
+        th {
+            border-bottom: thin solid gainsboro;
+            padding: 10px 0;
+            &:nth-of-type(1) {
+                width: 6%;
+                input {
+                    text-align: right;
+                }
+            }
+            &:nth-of-type(2) {
+                width: 48%;
+                input {
+                    text-align: center;
+                }
+            }
+        }
+        td {
+            &:nth-of-type(1) {
+                width: 11%;
+            }
+            &:nth-of-type(2) {
+                width: 11%;
+            }
+            &:nth-of-type(3) {
+                width: 10%;
+            }
+            &:nth-of-type(4) {
+                width: 7%;
+            }
+            &:nth-of-type(5) {
+                width: 7%;
+            }
             input {
                 text-align: right;
             }
         }
-        &:nth-of-type(2) {
-            width: 48%;
-            input {
-                text-align: center;
+
+        .exp {
+            border-bottom: thin solid $ideal-color;
+            text-align: center;
+            padding: 10px 0;
+        }
+        .result {
+            border-bottom: thin solid $expected-color;
+            text-align: center;
+            padding: 10px 0;
+        }
+        .notComplete {
+            color: silver;
+            * {
+                color: silver;
             }
         }
-      }
-      td {
-          &:nth-of-type(1) {
-              width: 11%;
-          }
-          &:nth-of-type(2) {
-              width: 11%;
-          }
-          &:nth-of-type(3) {
-              width: 10%;
-          }
-          &:nth-of-type(4) {
-              width: 7%;
-          }
-          &:nth-of-type(5) {
-              width: 7%;
-          }
-          input {
-              text-align: right;
-          }
-      }
 
-      .exp {
-        border-bottom: thin solid $ideal-color;
-        text-align: center;
-        padding: 10px 0;
-      }
-      .result {
-        border-bottom: thin solid $expected-color;
-        text-align: center;
-        padding: 10px 0;
-      }
-      .notComplete {
-          color: silver;
-          * {
-              color: silver;
-          }
-      }
+        input {
+            width: 100%;
+            height: 100%;
+            background-color: transparent;
+            border: none;
+        }
 
-      input {
-          width: 100%;
-          height: 100%;
-          background-color: transparent;
-          border: none;
-      }
-
-      &.target {
-          background-color: rgba($color: navy, $alpha: 0.2);
-      }
-  }
+        &.target {
+            background-color: rgba($color: navy, $alpha: 0.2);
+        }
+    }
 }
 </style>
