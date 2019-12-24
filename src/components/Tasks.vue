@@ -221,24 +221,8 @@ table{
       }
 
       &.target {
-        //   background-color: lightgray;
           background-color: rgba($color: navy, $alpha: 0.2);
       }
   }
-}
-
-::-webkit-scrollbar{
-  width: 4px;
-}
-::-webkit-scrollbar-track{
-  background: transparent;
-  border: none;
-  border-radius: 4px;
-//   box-shadow: inset 0 0 2px #777; 
-}
-::-webkit-scrollbar-thumb{
-  background: rgba($color: gray, $alpha: 0.1);
-  border-radius: 4px;
-  box-shadow: none;
 }
 </style>
