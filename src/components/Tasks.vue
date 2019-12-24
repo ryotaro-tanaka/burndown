@@ -125,6 +125,7 @@ export default {
     height: 100vh;
     background-color: white;
     box-shadow: 0 0 2px 2px rgba($color: black, $alpha: 0.3);
+    overflow: overlay;
     .buttons {
         height: 36px;
         a {
@@ -226,5 +227,20 @@ table{
           background-color: rgba($color: navy, $alpha: 0.2);
       }
   }
+}
+
+::-webkit-scrollbar{
+  width: 4px;
+}
+::-webkit-scrollbar-track{
+  background: transparent;
+  border: none;
+  border-radius: 4px;
+//   box-shadow: inset 0 0 2px #777; 
+}
+::-webkit-scrollbar-thumb{
+  background: rgba($color: gray, $alpha: 0.1);
+  border-radius: 4px;
+  box-shadow: none;
 }
 </style>
