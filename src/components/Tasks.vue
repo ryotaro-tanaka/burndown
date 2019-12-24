@@ -1,19 +1,10 @@
 <template>
     <div id="tasks">
-        <!-- <p class="title">Tasks</p> -->
         <div class="buttons">
             <a href="#" @click="insertTask()" :disabled="true"> add </a>
             <a href="#" @click="deleteTask()">delete</a>
             <a href="#" @click="updateTaskId(-1)">up</a>
             <a href="#" @click="updateTaskId(1)">down</a>
-            <!-- <input type="button" value="add"
-            @click="insertTask()"> -->
-            <!-- <input type="button" value="delete"
-            @click="deleteTask()">
-            <input type="button" value="  ↑  "
-            @click="updateTaskId(-1)">
-            <input type="button" value="  ↓  "
-            @click="updateTaskId(1)"> -->
         </div>
         <table>
             <tbody>
@@ -125,8 +116,14 @@ export default {
     height: 100vh;
     background-color: white;
     box-shadow: 0 0 2px 2px rgba($color: black, $alpha: 0.3);
+    overflow-y: overlay;
     .buttons {
+        position: fixed;
+        background-color: white;
         height: 36px;
+        width: $tasks-width;
+        box-shadow: 0px 2px 1px -1px rgba($color: gray, $alpha: 0.1);
+        z-index: 1;
         a {
             position: relative;
             display: inline-block;
@@ -157,6 +154,8 @@ export default {
 }
 
 table{
+    position: absolute;
+    top: 36px;
   width: 100%;
   border-spacing: 0;
   tr {
@@ -222,7 +221,6 @@ table{
       }
 
       &.target {
-        //   background-color: lightgray;
           background-color: rgba($color: navy, $alpha: 0.2);
       }
   }

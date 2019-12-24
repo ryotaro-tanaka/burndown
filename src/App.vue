@@ -1,11 +1,13 @@
 <template>
   <div id="app">
     <Tasks/>
-    <DaysLabel/>
-    <CostLable/>
-    <Lines/>
-    <DaysMemory/>
-    <CostMemory/>
+    <div id="graph">
+      <DaysLabel/>
+      <CostLable/>
+      <Lines/>
+      <DaysMemory/>
+      <CostMemory/>
+    </div>
   </div>
 </template>
 
@@ -53,6 +55,17 @@ export default {
   color: #2c3e50;
 }
 
+#graph {
+  position: fixed;
+  top: 0;
+  // left: $tasks-width;
+  left: 0;
+  overflow: overlay;
+  height: 100vh;
+  // width: 100vw - $tasks-width;
+  width: 100vw;
+}
+
 #tasks {
   z-index: 6;
 }
@@ -70,5 +83,20 @@ export default {
 }
 #cost-memory {
   z-index: 1;
+}
+
+::-webkit-scrollbar{
+  width: 4px;
+  height: 4px;
+}
+::-webkit-scrollbar-track{
+  background: transparent;
+  border: none;
+  border-radius: 4px;
+}
+::-webkit-scrollbar-thumb{
+  background: rgba($color: gray, $alpha: 0.1);
+  border-radius: 4px;
+  box-shadow: none;
 }
 </style>
