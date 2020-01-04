@@ -1,6 +1,6 @@
 {
-  "name": "burndown-chart-app",
-  "version": "0.12.0",
+  "name": "burndown",
+  "version": "1.0.0",
   "private": true,
   "scripts": {
     "dev": "vue-devtools",
