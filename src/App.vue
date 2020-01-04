@@ -30,6 +30,7 @@ export default {
     CostMemory
   },
   created () {
+    document.title = 'burn down';
     this.$store.dispatch('setWeekly');
     this.$store.dispatch('setStartDay');
     this.$store.dispatch('setTasks');
