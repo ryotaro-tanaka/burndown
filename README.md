@@ -16,16 +16,16 @@ This is the begin date of the project.
 This is the only input.  
 Changes are reflected immediately in the graphs.  
 
-Refer to the table and image below for the input contents.
+Refer to the table and image below for the input contents.  
 |No.|column name|description|
-|---:|:--:|:---|
+|---:|:---:|:---|
 |1|number|auto number|
 |2|name|task name|
 |3|expected cost|The cost you expected.|
 |4|result cost|The resulting cost.|
 |5|result year|end date of task.|
 |6|result month|end date of task.|
-|7|result day|end date of task.|
+|7|result day|end date of task.|  
 ![task](https://raw.github.com/wiki/ryotaro-tanaka/burndown/assets/tasks.png "task")
 ### graphs
 The y-axis is cost and the x-axis is date.  
