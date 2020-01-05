@@ -1,6 +1,6 @@
 'use strict'
 
-import { app, protocol, BrowserWindow } from 'electron'
+import { app, Menu, protocol, BrowserWindow } from 'electron'
 import {
   createProtocol,
   // installVueDevtools
@@ -11,14 +11,25 @@ const isDevelopment = process.env.NODE_ENV !== 'production'
 // be closed automatically when the JavaScript object is garbage collected.
 let win
 
+//don't show menu
+Menu.setApplicationMenu(null);
+
 // Scheme must be registered before the app is ready
 protocol.registerSchemesAsPrivileged([{scheme: 'app', privileges: { secure: true, standard: true } }])
 
 function createWindow () {
   // Create the browser window.
-  win = new BrowserWindow({ width: 800, height: 600, webPreferences: {
-    nodeIntegration: true
-  } })
+  win = new BrowserWindow({
+      title: 'burn down',
+      // frame: false,
+      // thickFrame: false,
+      width: 1200,
+      height: 900,
+      webPreferences: {
+        nodeIntegration: true
+      },
+      icon: 'assets/icon.png'
+    })
 
   if (process.env.WEBPACK_DEV_SERVER_URL) {
     // Load the url of the dev server if in development mode

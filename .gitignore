@@ -26,3 +26,6 @@ yarn-error.log*
 #db
 /db/*
 !/db/sch.db
+
+#wiki
+burndown.wiki/

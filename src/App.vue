@@ -29,6 +29,9 @@ export default {
     DaysMemory,
     CostMemory
   },
+  beforeCreate () {
+    document.title = 'burn down';
+  },
   created () {
     this.$store.dispatch('setWeekly');
     this.$store.dispatch('setStartDay');

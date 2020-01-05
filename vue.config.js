@@ -2,10 +2,10 @@ module.exports = {
     pluginOptions: {
       electronBuilder: {
         builderOptions: {
-          productName: "app-name",
-          appId: "com.sample.appname",
+          productName: "burndown",
+          appId: "com.burndown",
           win: {
-            icon: 'src/assets/app.ico',
+            icon: 'src/assets/icon.ico',
             target: [
               {
                 target: 'zip', // 'zip', 'nsis', 'portable'
