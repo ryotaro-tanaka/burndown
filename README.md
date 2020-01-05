@@ -17,6 +17,7 @@ This is the only input.
 Changes are reflected immediately in the graphs.  
 
 Refer to the table and image below for the input contents.  
+
 |No.|column name|description|
 |-----:|:-----:|:-----|
 |1|number|auto number|
@@ -25,7 +26,8 @@ Refer to the table and image below for the input contents.
 |4|result cost|The resulting cost.|
 |5|result year|end date of task.|
 |6|result month|end date of task.|
-|7|result day|end date of task.|  
+|7|result day|end date of task.|
+
 ![task](https://raw.github.com/wiki/ryotaro-tanaka/burndown/assets/tasks.png "task")
 ### graphs
 The y-axis is cost and the x-axis is date.  
@@ -72,6 +74,9 @@ npm run lint
 * Add selection feature of project(database).
 * Keep *ideal point* on seven days a week.
 * Add Demo to this page.
+
+## author
+Ryotaro Tanaka
 
 ## License
 Waive copyright.  
