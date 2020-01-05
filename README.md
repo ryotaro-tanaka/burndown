@@ -18,7 +18,7 @@ Changes are reflected immediately in the graphs.
 
 Refer to the table and image below for the input contents.  
 |No.|column name|description|
-|---:|:---:|:---|
+|-----:|:-----:|:-----|
 |1|number|auto number|
 |2|name|task name|
 |3|expected cost|The cost you expected.|
