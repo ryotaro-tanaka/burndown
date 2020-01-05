@@ -69,6 +69,15 @@ const startDayModule = {
                     commit('SET_DAY', row.day);
                 });
             });
+        },
+        updateStartDay (context, {year, month, day}) {
+            console.log({year, month, day})
+            db.serialize(() => {
+                db.prepare('update StartDay set year = ?, month = ?, day = ?')
+                    .run(year, month,day)
+                    .finalize();
+            });
+            this.dispatch({type:'setStartDay', fake:context});
         }
     }
 }
@@ -78,12 +87,20 @@ const tasksModule = {
         tasks: []
     },
     getters: {
-        // tasksCount: state => {
-        //     return state.tasks.length;
-        // }
         allExpectedCost: state => {
             return state.tasks.reduce((p, task) => p + task.exp_cost, 0);
-        }
+        },
+        compuletedTasks: state => {
+            return state.tasks.filter(task => {if(task.is_completed) return task;});
+        },
+        expectedCostToNow: state => {
+            const compuletedTasks = state.tasks.filter(task => {if(task.is_completed) return task;});
+            return compuletedTasks.reduce((p, task) => p + task.exp_cost, 0);
+        },
+        resultCostToNow: state => {
+            const compuletedTasks = state.tasks.filter(task => {if(task.is_completed) return task;});
+            return compuletedTasks.reduce((p, task) => p + task.result_cost, 0);
+        },
     },
     mutations: {
         SET_TASKS (state, status) {
@@ -169,6 +186,9 @@ export default new Vuex.Store({
         graphHeight:0
     },
     mutations: {
+        SET_DAYSCOUNT (state, status) {
+            state.daysCount = status;
+        },
         SET_GRAPHWIDTH (state, status) {
             state.graphWidth = status;
         },
@@ -177,6 +197,10 @@ export default new Vuex.Store({
         }
     },
     actions: {
+        setDaysCount ({commit, state}, {val}) {
+            if (state.daysCount < val)
+                commit('SET_DAYSCOUNT', val);
+        },
         setGraphWidth ({commit}, {val}) {
             commit('SET_GRAPHWIDTH', val);
         },

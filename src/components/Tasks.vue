@@ -1,18 +1,36 @@
 <template>
     <div id="tasks">
-        <p>Tasks</p>
-        <div>
-            <input type="button" value="add"
-            @click="insertTask()">
-            <input type="button" value="delete"
-            @click="deleteTask()">
-            <input type="button" value="  ↑  "
-            @click="updateTaskId(-1)">
-            <input type="button" value="  ↓  "
-            @click="updateTaskId(1)">
+        <div class="buttons">
+            <a href="#" @click="insertTask()" :disabled="true"> add </a>
+            <a href="#" @click="deleteTask()">delete</a>
+            <a href="#" @click="updateTaskId(-1)">up</a>
+            <a href="#" @click="updateTaskId(1)">down</a>
         </div>
         <table>
             <tbody>
+                <tr class="start-day">
+                    <th></th>
+                    <th>
+                        <input type="text" value="start date" disabled="disabled">
+                    </th>
+                    <td></td>
+                    <td></td>
+                    <td>
+                        <input type="number" id="start-year"
+                        :value="start_year"
+                        @click="updateStartDay()">
+                    </td>
+                    <td>
+                        <input type="number" id="start-month"
+                        :value="start_month"
+                        @click="updateStartDay()">
+                    </td>
+                    <td>
+                        <input type="number" id="start-day"
+                        :value="start_day"
+                        @click="updateStartDay()">
+                    </td>
+                </tr>
                 <tr v-for="task in tasks" :key="task.task_id" :id="task.task_id"
                 :class="{target: targetTaskId === task.task_id}"
                 @click="changeTarget(task.task_id)">
@@ -78,6 +96,15 @@ export default {
                 resultMonth: tr.getElementsByClassName('result-month')[0].value,
                 resultDay: tr.getElementsByClassName('result-day')[0].value
             }
+        },
+        start_year () {
+            return this.$store.state.startDay.year;
+        },
+        start_month () {
+            return this.$store.state.startDay.month;
+        },
+        start_day () {
+            return this.$store.state.startDay.day;
         }
     },
     methods: {
@@ -105,6 +132,13 @@ export default {
                 .then((newTaskId) => {
                     this.changeTarget(newTaskId);
                 });
+        },
+        updateStartDay () {
+            this.$store.dispatch('updateStartDay', {
+                    year: document.getElementById('start-year').value,
+                    month: document.getElementById('start-month').value,
+                    day: document.getElementById('start-day').value
+                });
         }
     }
 }
@@ -119,46 +153,119 @@ export default {
     left: 0;
     width: $tasks-width;
     height: 100vh;
-    border-right: medium solid black;
     background-color: white;
+    box-shadow: 0 0 2px 2px rgba($color: black, $alpha: 0.3);
+    overflow-y: overlay;
+    .buttons {
+        position: fixed;
+        background-color: white;
+        height: 36px;
+        width: $tasks-width;
+        box-shadow: 0px 2px 1px -1px rgba($color: gray, $alpha: 0.1);
+        z-index: 1;
+        a {
+            position: relative;
+            display: inline-block;
+            font-weight: bold;
+            padding: 0.25em 0;
+            text-decoration: none;
+            color: navy;
+            margin: 0 0.5em;
+            width: 48px;
+            &::before {
+                position: absolute;
+                content: '';
+                width: 100%;
+                height: 4px;
+                top:100%;
+                left: 0;
+                border-radius: 3px;
+                background:navy;
+                transition: .2s;
+            }
+            &:hover::before {
+                top: -webkit-calc(100% - 3px);
+                top: calc(100% - 3px);
+            }
+        }
+    }
 }
 
 table{
-  width: 100%;
-  border-spacing: 0;
-  tr {
-      th {
-        border-bottom: thin solid gainsboro;
-        padding: 10px 0;
+    position: absolute;
+    top: 36px;
+    width: 100%;
+    border-spacing: 0;
+    tr {
+        &.start-day {
+            th, td {
+                border-bottom: thin solid gainsboro;
+            }
+        }
+        th {
+            border-bottom: thin solid gainsboro;
+            padding: 10px 0;
+            &:nth-of-type(1) {
+                width: 6%;
+                input {
+                    text-align: right;
+                }
+            }
+            &:nth-of-type(2) {
+                width: 48%;
+                input {
+                    text-align: center;
+                }
+            }
+        }
+        td {
+            &:nth-of-type(1) {
+                width: 11%;
+            }
+            &:nth-of-type(2) {
+                width: 11%;
+            }
+            &:nth-of-type(3) {
+                width: 10%;
+            }
+            &:nth-of-type(4) {
+                width: 7%;
+            }
+            &:nth-of-type(5) {
+                width: 7%;
+            }
+            input {
+                text-align: right;
+            }
+        }
 
-      }
-      .exp {
-        border-bottom: thin solid green;
-        text-align: center;
-        padding: 10px 0;
-      }
-      .result {
-        border-bottom: thin solid orange;
-        text-align: center;
-        padding: 10px 0;
-      }
-      .notComplete {
-          color: silver;
-          * {
-              color: silver;
-          }
-      }
+        .exp {
+            border-bottom: thin solid $ideal-color;
+            text-align: center;
+            padding: 10px 0;
+        }
+        .result {
+            border-bottom: thin solid $expected-color;
+            text-align: center;
+            padding: 10px 0;
+        }
+        .notComplete {
+            color: silver;
+            * {
+                color: silver;
+            }
+        }
 
-      input {
-          width: 100%;
-          height: 100%;
-          background-color: transparent;
-          border: none;
-      }
+        input {
+            width: 100%;
+            height: 100%;
+            background-color: transparent;
+            border: none;
+        }
 
-      &.target {
-          background-color: lightgray;
-      }
-  }
+        &.target {
+            background-color: rgba($color: navy, $alpha: 0.2);
+        }
+    }
 }
 </style>
