@@ -1,6 +1,6 @@
 # burndown
 This is a simple application that displays a burndown chart.  
-When You enter tasks when starting a new project I create a good graph.  
+If you want to create a new project, this application helps you to make an awesome graph based on your entered tasks.  
 If you are adjusting schedule with excel try me. You can save time.  
 ![icon](https://raw.github.com/wiki/ryotaro-tanaka/burndown/assets/overview.png "icon")  
 
@@ -62,7 +62,7 @@ npm run serve
 ```
 ### Compiles and minifies for production
 ```
-npm run build
+npm run build --linux --x64
 ```
 ### Lints and fixes files
 ```
@@ -75,7 +75,7 @@ npm run lint
 * Keep *ideal point* on seven days a week.
 * Add Demo to this page.
 
-## author
+## Author
 Ryotaro Tanaka
 
 ## License
