@@ -1,4 +1,5 @@
 # burndown
+![license](https://img.shields.io/github/license/ryotaro-tanaka/burndown "license")  
 This is a simple application that displays a burndown chart.  
 If you want to create a new project, this application helps you to make an awesome graph based on your entered tasks.  
 If you are adjusting schedule with excel try me. You can save time.  
@@ -75,9 +76,5 @@ npm run lint
 * Keep *ideal point* on seven days a week.
 * Add Demo to this page.
 
-## Author
-Ryotaro Tanaka
-
 ## License
-Waive copyright.  
-When you clone this application, it's all yours.  
+[MIT](https://github.com/ryotaro-tanaka/burndown/blob/master/LICENSE "MIT")
